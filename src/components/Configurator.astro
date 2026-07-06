@@ -1,0 +1,1329 @@
+---
+// Frontmatter
+const serviceId = import.meta.env.EMAILJS_SERVICE_ID;
+const templateId = import.meta.env.EMAILJS_TEMPLATE_ID;
+const publicKey = import.meta.env.EMAILJS_PUBLIC_KEY;
+---
+
+<section class="configurator section--padded">
+  <div class="container">
+    <header class="configurator__header">
+      <h2 class="section-heading">Обсудим ваш проект</h2>
+      <p class="section-heading__subtitle">Ответьте на несколько вопросов о проекте или оставьте контакты — мы свяжемся с вами и обсудим детали.</p>
+    </header>
+    <div class="configurator__stage">
+      <!-- В шаблоне -->
+      <div class="configurator__card" data-question-card aria-live="polite" aria-atomic="true"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="cfg-modal" id="cfgModal" role="dialog" aria-modal="true" aria-label="Оставить заявку">
+  <div class="cfg-modal__overlay" id="cfgModalOverlay"></div>
+  <div class="cfg-modal__window">
+    <button class="cfg-modal__close" id="cfgModalClose" aria-label="Закрыть">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <line x1="1" y1="1" x2="17" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <line x1="17" y1="1" x2="1" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div class="contacts__form-card">
+      <h3 class="contacts__form-title">Оставить заявку</h3>
+      <div class="cfg-modal__summary" id="cfgModalSummary"></div>
+      <form class="contacts__form" id="modalContactForm" novalidate>
+        <input type="hidden" id="modal-cfg-result" name="cfg_result" value="">
+        <div class="contacts__field">
+          <input
+              type="text"
+              id="modal-name"
+              name="from_name"
+              class="contacts__input"
+              placeholder=" "
+              required
+              data-validate="name"
+              autocomplete="name"
+          />
+          <label for="modal-name">Ваше имя *</label>
+        </div>
+        <div class="contacts__field">
+          <input
+              type="tel"
+              id="modal-phone"
+              name="from_phone"
+              class="contacts__input"
+              placeholder=" "
+              required
+              data-validate="phone"
+              autocomplete="tel"
+          />
+          <label for="modal-phone">Телефон *</label>
+        </div>
+        <div class="contacts__field">
+          <textarea
+              id="modal-message"
+              name="message"
+              class="contacts__input contacts__textarea"
+              placeholder=" "
+              rows="3"
+              data-validate="message"
+          ></textarea>
+          <label for="modal-message">Комментарий</label>
+        </div>
+        <button type="submit" class="contacts__submit" id="modalSubmit">Отправить заявку</button>
+        <p class="contacts__status" id="modalStatus" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</div>
+<script is:inline define:vars={{ serviceId, templateId, publicKey }}>
+  // ── Загрузка EmailJS ──────────────────────────────────────
+  function loadEmailJS() {
+    return new Promise((resolve) => {
+      if (typeof emailjs !== 'undefined') {
+        resolve();
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+      script.onload = () => resolve();
+      script.onerror = () => {
+        console.error('❌ Не удалось загрузить EmailJS');
+        resolve();
+      };
+      document.head.appendChild(script);
+    });
+  }
+
+  // ── Основная инициализация ──────────────────────────────
+  async function initApp() {
+    await loadEmailJS();
+
+    if (typeof emailjs === 'undefined') {
+      console.error('❌ EmailJS не доступен');
+      const statusEl = document.getElementById('modalStatus');
+      if (statusEl) {
+        statusEl.textContent = 'Ошибка загрузки сервиса. Напишите напрямую на imc@imc.by';
+        statusEl.className = 'contacts__status is-error';
+      }
+      return;
+    }
+
+    try {
+      emailjs.init({ publicKey });
+    } catch (err) {
+      console.error('❌ Ошибка инициализации EmailJS:', err);
+      return;
+    }
+
+    // ── Modal logic ──────────────────────────────────────────
+    const modal = document.getElementById('cfgModal');
+    const overlay = document.getElementById('cfgModalOverlay');
+    const closeBtn = document.getElementById('cfgModalClose');
+    const form = document.getElementById('modalContactForm');
+    const submitBtn = document.getElementById('modalSubmit');
+    const statusEl = document.getElementById('modalStatus');
+    const DEFAULT_BUTTON_TEXT = submitBtn.textContent;
+
+    // Элемент, на который нужно вернуть фокус после закрытия модалки
+    let lastFocusedElement = null;
+
+    function getFocusableElements() {
+      return modal.querySelectorAll(
+        'button:not([disabled]), [href], input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+    }
+
+    function trapFocus(e) {
+      if (e.key !== 'Tab') return;
+      const focusable = getFocusableElements();
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    function closeModal() {
+      modal.classList.remove('is-open');
+      document.body.style.overflow = '';
+      form.reset();
+      showStatus('', '');
+      form.querySelectorAll('.is-error, .is-valid').forEach(el => el.classList.remove('is-error', 'is-valid'));
+      form.querySelectorAll('.field-error, .field-hint').forEach(el => el.remove());
+      const hidden = document.getElementById('modal-cfg-result');
+      if (hidden) hidden.value = '';
+
+      // Возвращаем фокус туда, откуда модалка была открыта
+      lastFocusedElement?.focus({ preventScroll: true });
+    }
+
+    overlay?.addEventListener('click', closeModal);
+    closeBtn?.addEventListener('click', closeModal);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+    modal.addEventListener('keydown', trapFocus);
+
+    function showStatus(text, type) {
+      statusEl.textContent = text;
+      statusEl.className = `contacts__status ${type ? 'is-' + type : ''}`;
+    }
+
+    // ── Отправка формы ──
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Если validation.js уже нашёл ошибки — форма помечена классами is-error
+      const hasErrors = form.querySelectorAll('.is-error').length > 0;
+      if (hasErrors) {
+        showStatus('Пожалуйста, исправьте ошибки в форме.', 'error');
+        return;
+      }
+
+      // Отправка
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Отправляем...';
+      showStatus('', '');
+      try {
+        await emailjs.sendForm(serviceId, templateId, form);
+
+        if (typeof gtag !== 'undefined') gtag('event', 'configurator_submit', { event_category: 'form' });
+        if (typeof ym !== 'undefined') ym(110113534, 'reachGoal', 'configurator_submit');
+
+        showStatus('Заявка отправлена! Свяжемся с вами в ближайшее время.', 'success');
+        form.reset();
+        form.querySelectorAll('.is-error, .is-valid').forEach(el => el.classList.remove('is-error', 'is-valid'));
+        form.querySelectorAll('.field-error, .field-hint').forEach(el => el.remove());
+        const hidden = document.getElementById('modal-cfg-result');
+        if (hidden) hidden.value = '';
+        setTimeout(() => { closeModal(); window.__configurator?.showSuccessScreen?.(); }, 1500);
+      } catch (err) {
+        console.error('EmailJS error:', err);
+        showStatus('Ошибка отправки. Напишите напрямую на imc@imc.by', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = DEFAULT_BUTTON_TEXT;
+      }
+    });
+
+    // ── Configurator logic ────────────────────────────────────
+    const card = document.querySelector('[data-question-card]');
+    if (card) {
+      const state = {siteType: null, design: null, services: []};
+
+      const questions = [
+        {
+          key: 'siteType',
+          title: 'Какой веб‑сайт хотите создать?',
+          multiple: false,
+          options: [
+            {value: 'Лендинг', description: 'Одностраничный веб‑сайт'},
+            {value: 'Веб‑сайт услуг', description: 'Для компаний и специалистов'},
+            {value: 'Многостраничный веб‑сайт', description: 'Корпоративный веб‑сайт'},
+            {value: 'Не уверен', description: ''}
+          ]
+        },
+        {
+          key: 'design',
+          title: 'Есть ли готовый дизайн?',
+          multiple: false,
+          options: [
+            {value: 'Да, дизайн готов', description: ''},
+            {value: 'Дизайн в разработке', description: ''},
+            {value: 'Нужна помощь с дизайном', description: ''},
+            {value: 'Не уверен', description: ''}
+          ]
+        },
+        {
+          key: 'services',
+          title: 'Что ещё потребуется?',
+          subTitle: 'Можно выбрать несколько вариантов',
+          multiple: true,
+          options: [
+            {value: 'SEO', description: 'Техническая подготовка к продвижению'},
+            {value: 'Аналитика', description: 'Google Analytics и Яндекс.Метрика'},
+            {value: 'CMS', description: 'Самостоятельное редактирование веб‑сайта'},
+            {value: 'Пока не решил', description: ''}
+          ]
+        }
+      ];
+
+      function getProgressBarHtml(stepIndex) {
+        const isFinish = stepIndex === 'finish';
+        if (isFinish) stepIndex = 2;
+        return `
+    <div class="configurator__progressbar">
+      <div class="configurator__segments">
+        <span class="configurator__segment ${stepIndex >= 0 ? 'is-active' : ''}"></span>
+        <span class="configurator__segment ${stepIndex >= 1 ? 'is-active' : ''}"></span>
+        <span class="configurator__segment ${stepIndex >= 2 ? 'is-active' : ''}"></span>
+      </div>
+      <span class="configurator__progress-label">${isFinish ? 'Готово' : `Шаг ${stepIndex + 1} из 3`}</span>
+    </div>
+  `;
+      }
+
+      function getSelectedTagsHtml() {
+        const tags = [];
+        if (state.siteType) tags.push(state.siteType);
+        if (state.design) tags.push(state.design);
+        state.services.forEach(item => tags.push(item));
+        if (!tags.length) return '';
+        return `<div class="configurator__tags">${tags.map(tag => `<span class="configurator__tag">${tag}</span>`).join('')}</div>`;
+      }
+
+      function getCurrentStep() {
+        if (!state.siteType) return 0;
+        if (!state.design) return 1;
+        if (!state.services.length) return 2;
+        return 'finish';
+      }
+
+      function animateCard(callback) {
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduced) { callback(); return; }
+        card.classList.add('is-leaving');
+        setTimeout(() => {
+          callback();
+          card.classList.remove('is-leaving');
+          card.classList.add('is-entering');
+          requestAnimationFrame(() => card.classList.add('is-entering-active'));
+          setTimeout(() => card.classList.remove('is-entering', 'is-entering-active'), 350);
+        }, 350);
+      }
+
+      function openModal() {
+        const tags = [];
+        if (state.siteType) tags.push(state.siteType);
+        if (state.design) tags.push(state.design);
+        state.services.forEach(item => tags.push(item));
+        const summary = tags.join(' • ');
+        const hiddenField = document.getElementById('modal-cfg-result');
+        const summaryBlock = document.getElementById('cfgModalSummary');
+        if (hiddenField) hiddenField.value = summary;
+        if (summaryBlock) summaryBlock.innerHTML = `<strong>${summary}</strong>`;
+
+        // Запоминаем, откуда открыта модалка, чтобы вернуть фокус при закрытии
+        lastFocusedElement = document.activeElement;
+
+        modal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+
+        // Переводим фокус в модалку — на первое поле формы
+        const firstField = form.querySelector('input, textarea');
+        firstField?.focus({ preventScroll: true });
+      }
+
+      // Флаг: true только при самой первой загрузке страницы.
+      // Фокус не переводим на первом рендере — пользователь ещё ничего не делал,
+      // непрошенный focus() тянет за собой нежелательный автоскролл к конфигуратору.
+      let isFirstRender = true;
+
+      function renderFinishScreen() {
+        card.innerHTML = `
+          <div class="configurator__card-content">
+            ${getProgressBarHtml('finish')}
+            <h3 class="configurator__card-title" tabindex="-1">Проверьте ваш проект</h3>
+            <p class="configurator__helper">Проверьте параметры перед отправкой заявки.</p>
+            <div class="configurator__summary-list">
+              <div class="configurator__summary-item">
+                <span class="configurator__summary-name">Тип веб‑сайта</span>
+                <strong>${state.siteType ?? '—'}</strong>
+              </div>
+              <div class="configurator__summary-item">
+                <span class="configurator__summary-name">Дизайн</span>
+                <strong>${state.design ?? '—'}</strong>
+              </div>
+              <div class="configurator__summary-item">
+                <span class="configurator__summary-name">Дополнительно</span>
+                <strong>${state.services.length ? state.services.join(', ') : '—'}</strong>
+              </div>
+            </div>
+            <div class="configurator__actions">
+              <button type="button" class="configurator__edit" data-edit-configurator>Изменить ответы</button>
+              <button type="button" class="configurator__next" data-open-modal>Отправить заявку</button>
+            </div>
+          </div>
+        `;
+        card.querySelector('[data-open-modal]').addEventListener('click', openModal);
+        card.querySelector('[data-edit-configurator]').addEventListener('click', () => {
+          state.siteType = null; state.design = null; state.services = [];
+          renderQuestion();
+        });
+
+        // Переводим фокус на заголовок нового экрана — сигнал для скринридеров о смене контента.
+        // preventScroll: true — чтобы фокус не тянул за собой прокрутку страницы.
+        if (!isFirstRender) {
+          card.querySelector('.configurator__card-title')?.focus({ preventScroll: true });
+        }
+        isFirstRender = false;
+      }
+
+      function renderQuestion() {
+        const stepIndex = getCurrentStep();
+        if (stepIndex === 'finish') { renderFinishScreen(); return; }
+        const question = questions[stepIndex];
+        const subTitleHtml = question.subTitle ? `<p class="configurator__subtitle">${question.subTitle}</p>` : '';
+
+        // Одиночный выбор — role="radio" + aria-checked.
+        // Множественный выбор — aria-pressed (это чекбоксоподобное поведение).
+        const optionsHtml = question.options.map(opt => {
+          const isSelected = question.multiple
+            ? state.services.includes(opt.value)
+            : state[question.key] === opt.value;
+
+          const ariaAttr = question.multiple
+            ? `aria-pressed="${isSelected}"`
+            : `role="radio" aria-checked="${isSelected}"`;
+
+          return `
+          <button type="button" class="configurator__option ${isSelected ? 'is-selected' : ''}" data-value="${opt.value}" ${ariaAttr}>
+            ${opt.value}
+            ${opt.description ? `<small>${opt.description}</small>` : ''}
+          </button>
+        `;
+        }).join('');
+
+        const actionHtml = question.multiple ? `
+          <div class="configurator__actions">
+            <button type="button" class="configurator__next" id="continueServices">Продолжить</button>
+          </div>
+        ` : '';
+
+        const optionsWrapAttr = question.multiple ? '' : 'role="radiogroup"';
+
+        card.innerHTML = `
+          <div class="configurator__card-content">
+            ${getProgressBarHtml(stepIndex)}
+            ${getSelectedTagsHtml()}
+            <h3 class="configurator__card-title" tabindex="-1">${question.title}</h3>
+            ${subTitleHtml}
+            <div class="configurator__options" ${optionsWrapAttr}>${optionsHtml}</div>
+            ${actionHtml}
+          </div>
+        `;
+        bindEvents(question);
+
+        // Переводим фокус на заголовок вопроса — сигнал о смене контента для скринридеров.
+        // preventScroll: true — чтобы фокус не тянул за собой прокрутку страницы.
+        // На первом рендере (загрузка страницы) фокус не трогаем вообще.
+        if (!isFirstRender) {
+          card.querySelector('.configurator__card-title')?.focus({ preventScroll: true });
+        }
+        isFirstRender = false;
+      }
+
+      function bindEvents(question) {
+        card.querySelectorAll('.configurator__option').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const value = btn.dataset.value;
+
+            if (!question.multiple) {
+              state[question.key] = value;
+              animateCard(() => renderQuestion());
+              return;
+            }
+
+            const exists = state.services.includes(value);
+            if (exists) {
+              state.services = state.services.filter(i => i !== value);
+              btn.classList.remove('is-selected');
+              btn.setAttribute('aria-pressed', 'false');
+            } else {
+              state.services.push(value);
+              btn.classList.add('is-selected');
+              btn.setAttribute('aria-pressed', 'true');
+            }
+          });
+        });
+        const continueBtn = document.getElementById('continueServices');
+        if (!continueBtn) return;
+        continueBtn.addEventListener('click', () => {
+          if (!state.services.length) return;
+          animateCard(() => renderQuestion());
+        });
+      }
+
+      function showSuccessScreen() {
+        card.innerHTML = `
+          <div class="configurator__card-content">
+            ${getProgressBarHtml('finish')}
+            <h3 class="configurator__card-title" tabindex="-1">Заявка отправлена</h3>
+            <p class="configurator__helper">Мы получили информацию о вашем проекте и свяжемся с вами в ближайшее время.</p>
+            <div class="configurator__actions">
+              <button type="button" class="configurator__next" data-reset>Создать ещё одну заявку</button>
+            </div>
+          </div>
+        `;
+        card.querySelector('[data-reset]').addEventListener('click', () => {
+          state.siteType = null; state.design = null; state.services = [];
+          renderQuestion();
+        });
+
+        card.querySelector('.configurator__card-title')?.focus({ preventScroll: true });
+      }
+
+      window.__configurator = {
+        showSuccessScreen,
+        reset() {
+          state.siteType = null; state.design = null; state.services = [];
+          renderQuestion();
+        }
+      };
+
+      renderQuestion();
+    }
+  }
+
+  // Запускаем после загрузки DOM
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+  } else {
+    initApp();
+  }
+</script>
+<style is:global>
+  .configurator {
+    background: var(--color-bg-primary);
+  }
+
+  .configurator__header {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .configurator__stage {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .configurator__card {
+    border-radius: var(--radius-full);
+    padding: var(--space-xl);
+    min-height: 200px;
+    overflow: hidden;
+    background: var(--color-bg-primary);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.10);
+  }
+
+  /* Прогресс-бар */
+  .configurator__progressbar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-lg);
+  }
+
+  .configurator__segments {
+    display: flex;
+    gap: var(--space-xs);
+  }
+
+  .configurator__segment {
+    flex: 1;
+    height: 3px;
+    background: var(--color-divider);
+    border-radius: var(--radius-full);
+    transition: background var(--transition-base);
+  }
+
+  .configurator__segment.is-active {
+    background: var(--color-accent);
+  }
+
+  .configurator__progress-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* Теги выбранных ответов */
+  .configurator__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
+  }
+
+  .configurator__tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px var(--space-sm);
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  /* Заголовок карточки */
+  .configurator__card-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-md);
+  }
+
+  .configurator__subtitle {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-md);
+  }
+
+  /* Варианты ответов */
+  .configurator__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .configurator__option {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-sm) var(--space-md);
+    min-width: 160px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    text-align: left;
+    transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+    font-family: var(--font-family-base);
+    background: var(--color-bg-secondary);
+    box-shadow: none;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-divider);
+  }
+
+  .configurator__option:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .configurator__option.is-selected {
+    border-color: var(--color-accent);
+    background: rgba(255, 190, 73, 0.08);
+  }
+
+  .configurator__option small {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-light);
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+  }
+
+  /* Кнопки действий */
+  .configurator__actions {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .configurator__next {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-sm) var(--space-lg);
+    background: var(--color-accent);
+    border: none;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: background var(--transition-base), transform var(--transition-base);
+  }
+
+  .configurator__next:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  .configurator__edit {
+    background: transparent;
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-full);
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: border-color var(--transition-base), color var(--transition-base);
+  }
+
+  .configurator__edit:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent-hover);
+  }
+
+  /* Экран итога */
+  .configurator__helper {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-lg);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .configurator__summary-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--color-divider);
+    margin-bottom: var(--space-lg);
+  }
+
+  .configurator__summary-item {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--space-md);
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .configurator__summary-name {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .configurator__summary-item strong {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* Анимации */
+  .configurator__card.is-leaving {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.35s ease;
+  }
+
+  .configurator__card.is-entering {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  .configurator__card.is-entering-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: 0.35s ease;
+  }
+
+  /* Модалка */
+  .cfg-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+  }
+
+  .cfg-modal.is-open {
+    display: block;
+  }
+
+  .cfg-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .cfg-modal__window {
+    position: relative;
+    width: min(560px, calc(100% - 32px));
+    max-height: calc(100vh - 60px);
+    margin: 30px auto;
+    overflow-y: auto;
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    animation: modalIn 0.35s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .cfg-modal__close {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-circle);
+    background: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: border-color var(--transition-base), color var(--transition-base), transform var(--transition-base);
+  }
+
+  .cfg-modal__close:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent-hover);
+    transform: rotate(90deg);
+  }
+
+  /* Форма в модалке */
+  .contacts__form-card {
+    padding: var(--space-xl);
+  }
+
+  .contacts__form-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-lg);
+  }
+
+  .cfg-modal__summary {
+    margin-bottom: var(--space-lg);
+    padding: var(--space-sm) var(--space-md);
+    background: rgba(255, 190, 73, 0.08);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .cfg-modal__summary strong {
+    display: block;
+    color: var(--color-accent-hover);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .contacts__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .contacts__field {
+    position: relative;
+  }
+
+  .contacts__input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-base);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .contacts__input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(255, 190, 73, 0.15);
+  }
+
+  .contacts__input.is-error {
+    border-color: #ff7c7c;
+  }
+
+  .contacts__input.is-valid {
+    border-color: #4caf7d;
+  }
+
+  .contacts__field label {
+    position: absolute;
+    left: var(--space-md);
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    transition: 0.25s ease;
+    background: transparent;
+  }
+
+  .contacts__textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  .contacts__textarea + label {
+    top: var(--space-sm);
+    transform: none;
+  }
+
+  .contacts__input:focus + label,
+  .contacts__input:not(:placeholder-shown) + label {
+    top: -10px;
+    transform: none;
+    padding: 0 6px;
+    background: var(--color-bg-primary);
+    color: var(--color-accent-hover);
+    font-size: var(--font-size-xs);
+  }
+
+  .contacts__submit {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--color-accent);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    transition: background var(--transition-base), transform var(--transition-base);
+  }
+
+  .contacts__submit:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  .contacts__submit:disabled {
+    opacity: 0.6;
+    cursor: default;
+    transform: none;
+  }
+
+  .contacts__status {
+    min-height: 24px;
+    font-size: var(--font-size-sm);
+  }
+
+  .contacts__status.is-success { color: #4caf7d; }
+  .contacts__status.is-error { color: #ff7c7c; }
+
+  /* ==========================================================================
+     АДАПТИВНАЯ ВЕРСТКА: configurator + modal
+     ========================================================================== */
+
+  /* ===== Планшеты (до 992px) ===== */
+  @media (max-width: 992px) {
+    .configurator__header {
+      margin-bottom: var(--space-xl);
+    }
+
+    .configurator__stage {
+      max-width: 100%;
+      padding: 0 var(--space-sm);
+    }
+
+    .configurator__card {
+      padding: var(--space-lg);
+      min-height: 180px;
+    }
+
+    .configurator__card-title {
+      font-size: var(--font-size-lg);
+    }
+
+    .configurator__option {
+      min-width: 140px;
+      padding: var(--space-sm) var(--space-md);
+      font-size: var(--font-size-sm);
+    }
+
+    .configurator__option small {
+      font-size: var(--font-size-sm);
+    }
+
+    .configurator__summary-item {
+      grid-template-columns: 120px 1fr;
+      gap: var(--space-sm);
+    }
+
+    /* Модалка */
+    .cfg-modal__window {
+      width: min(520px, calc(100% - 24px));
+      max-height: calc(100vh - 40px);
+      margin: 20px auto;
+    }
+
+    .contacts__form-card {
+      padding: var(--space-lg);
+    }
+
+    .contacts__form-title {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--space-md);
+    }
+  }
+
+  /* ===== Мобильные (до 768px) ===== */
+  @media (max-width: 768px) {
+    .configurator__header {
+      margin-bottom: var(--space-lg);
+    }
+
+    .configurator__stage {
+      padding: 0;
+    }
+
+    .configurator__card {
+      padding: var(--space-md);
+      min-height: 160px;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .configurator__progressbar {
+      gap: 6px;
+      margin-bottom: var(--space-md);
+    }
+
+    .configurator__segments {
+      gap: 6px;
+    }
+
+    .configurator__segment {
+      height: 2px;
+    }
+
+    .configurator__progress-label {
+      font-size: 12px;
+    }
+
+    .configurator__tags {
+      gap: 6px;
+      margin-bottom: var(--space-sm);
+    }
+
+    .configurator__tag {
+      padding: 3px var(--space-sm);
+      font-size: 12px;
+    }
+
+    .configurator__card-title {
+      font-size: var(--font-size-md);
+      margin-bottom: var(--space-sm);
+    }
+
+    .configurator__subtitle {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-sm);
+    }
+
+    .configurator__options {
+      gap: var(--space-xs);
+      margin-bottom: var(--space-sm);
+    }
+
+    .configurator__option {
+      min-width: calc(50% - 6px);
+      flex: 1;
+      padding: var(--space-xs) var(--space-sm);
+      font-size: var(--font-size-sm);
+      border-radius: var(--radius-sm);
+    }
+
+    .configurator__option small {
+      font-size: var(--font-size-xs);
+      margin-top: 2px;
+    }
+
+    .configurator__actions {
+      gap: var(--space-sm);
+      margin-top: var(--space-sm);
+      flex-direction: row;
+    }
+
+    .configurator__next {
+      padding: var(--space-xs) var(--space-md);
+      font-size: var(--font-size-sm);
+      min-height: var(--touch-target-min);
+    }
+
+    .configurator__edit {
+      padding: var(--space-xs) var(--space-sm);
+      font-size: var(--font-size-sm);
+      min-height: var(--touch-target-min);
+    }
+
+    /* Экран итога */
+    .configurator__helper {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-md);
+    }
+
+    .configurator__summary-list {
+      margin-bottom: var(--space-md);
+    }
+
+    .configurator__summary-item {
+      grid-template-columns: 100px 1fr;
+      gap: var(--space-xs);
+      padding: var(--space-xs) 0;
+      font-size: var(--font-size-sm);
+    }
+
+    .configurator__summary-name {
+      font-size: 11px;
+    }
+
+    /* Модалка */
+    .cfg-modal__window {
+      width: calc(100% - 16px);
+      max-height: calc(100vh - 16px);
+      margin: 8px auto;
+      border-radius: var(--radius-sm);
+    }
+
+    .cfg-modal__close {
+      top: var(--space-sm);
+      right: var(--space-sm);
+      width: 32px;
+      height: 32px;
+    }
+
+    .cfg-modal__close svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .contacts__form-card {
+      padding: var(--space-md);
+    }
+
+    .contacts__form-title {
+      font-size: var(--font-size-md);
+      margin-bottom: var(--space-sm);
+    }
+
+    .cfg-modal__summary {
+      padding: var(--space-xs) var(--space-sm);
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-md);
+    }
+
+    .contacts__form {
+      gap: var(--space-sm);
+    }
+
+    .contacts__input {
+      padding: var(--space-xs) var(--space-sm);
+      font-size: var(--font-size-sm);
+      min-height: var(--touch-target-min);
+    }
+
+    .contacts__field label {
+      left: var(--space-sm);
+      font-size: var(--font-size-sm);
+    }
+
+    .contacts__textarea {
+      min-height: 80px;
+    }
+
+    .contacts__input:focus + label,
+    .contacts__input:not(:placeholder-shown) + label {
+      top: -8px;
+      font-size: 11px;
+    }
+
+    .contacts__submit {
+      padding: var(--space-xs) var(--space-md);
+      font-size: var(--font-size-sm);
+      min-height: var(--touch-target-min);
+    }
+
+    .contacts__status {
+      font-size: var(--font-size-sm);
+    }
+
+    .field-error {
+      font-size: var(--font-size-xs);
+      margin-top: 2px;
+    }
+  }
+
+  /* ===== Маленькие телефоны (до 480px) ===== */
+  @media (max-width: 480px) {
+    .configurator__card {
+      padding: var(--space-sm);
+      min-height: 140px;
+      border-radius: var(--radius-sm);
+    }
+
+    .configurator__card-title {
+      font-size: var(--font-size-md);
+    }
+
+    .configurator__options {
+      gap: 6px;
+    }
+
+    .configurator__option {
+      min-width: 100%;
+      padding: var(--space-xs) var(--space-sm);
+      font-size: var(--font-size-sm);
+    }
+
+    .configurator__option small {
+      font-size: var(--font-size-xs);
+    }
+
+    .configurator__actions {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .configurator__next,
+    .configurator__edit {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* Экран итога */
+    .configurator__summary-item {
+      grid-template-columns: 1fr;
+      gap: 2px;
+      padding: var(--space-xs) 0;
+    }
+
+    .configurator__summary-name {
+      font-size: 11px;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--color-text-secondary);
+    }
+
+    .configurator__summary-item strong {
+      font-size: var(--font-size-sm);
+    }
+
+    /* Модалка */
+    .cfg-modal__window {
+      width: calc(100% - 12px);
+      max-height: calc(100vh - 12px);
+      margin: 6px auto;
+      border-radius: var(--radius-sm);
+    }
+
+    .contacts__form-card {
+      padding: var(--space-sm);
+    }
+
+    .contacts__form-title {
+      font-size: var(--font-size-md);
+    }
+
+    .cfg-modal__summary {
+      padding: var(--space-xs) var(--space-sm);
+      font-size: var(--font-size-xs);
+    }
+
+    .cfg-modal__summary strong {
+      font-size: var(--font-size-sm);
+    }
+
+    .contacts__input {
+      font-size: var(--font-size-sm);
+      padding: var(--space-xs) var(--space-sm);
+    }
+
+    .contacts__field label {
+      font-size: var(--font-size-xs);
+    }
+
+    .contacts__textarea {
+      min-height: 70px;
+    }
+
+    .contacts__submit {
+      font-size: var(--font-size-sm);
+      padding: var(--space-xs);
+    }
+
+    .contacts__status {
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  /* ===== Очень узкие экраны (до 360px) ===== */
+  @media (max-width: 360px) {
+    .configurator__card {
+      padding: var(--space-xs);
+    }
+
+    .configurator__card-title {
+      font-size: var(--font-size-base);
+    }
+
+    .configurator__option {
+      font-size: var(--font-size-xs);
+      padding: 6px var(--space-xs);
+    }
+
+    .configurator__option small {
+      font-size: 11px;
+    }
+
+    .configurator__next,
+    .configurator__edit {
+      font-size: var(--font-size-xs);
+      padding: 6px var(--space-sm);
+      min-height: 40px;
+    }
+
+    /* Модалка */
+    .cfg-modal__window {
+      width: calc(100% - 8px);
+      margin: 4px auto;
+    }
+
+    .contacts__form-card {
+      padding: var(--space-xs);
+    }
+
+    .contacts__form-title {
+      font-size: var(--font-size-base);
+    }
+
+    .cfg-modal__summary {
+      font-size: 11px;
+      padding: 4px var(--space-xs);
+    }
+
+    .cfg-modal__summary strong {
+      font-size: var(--font-size-xs);
+    }
+
+    .contacts__input {
+      font-size: var(--font-size-xs);
+      padding: 6px var(--space-xs);
+      min-height: 38px;
+    }
+
+    .contacts__field label {
+      font-size: 11px;
+      left: var(--space-xs);
+    }
+
+    .contacts__input:focus + label,
+    .contacts__input:not(:placeholder-shown) + label {
+      top: -6px;
+      font-size: 10px;
+      padding: 0 4px;
+    }
+
+    .contacts__textarea {
+      min-height: 60px;
+    }
+
+    .contacts__submit {
+      font-size: var(--font-size-xs);
+      padding: 6px;
+      min-height: 38px;
+    }
+  }
+</style>

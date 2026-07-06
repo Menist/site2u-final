@@ -1,0 +1,179 @@
+---
+// src/components/HeroTitle.astro
+export interface Props {
+  text: string;
+  tag?: 'h1' | 'h2' | 'h3' | 'h4';
+  class?: string;
+}
+
+const { text, tag: Tag = 'h1', class: className = '' } = Astro.props;
+
+// Разбиваем текст на слова прямо на сервере
+const words = text.trim().split(/\s+/);
+---
+
+<Tag class:list={['hero__title', className]}>
+  {words.map((word, index) => (
+      <span class="hero__word" style={`--index: ${index}`}>
+      {word}
+    </span>
+  ))}
+</Tag>
+
+<style>
+  .hero__title {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.15em 0.4em;
+    font-size: clamp(36px, 3.2vw, 62px);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    margin-bottom: var(--space-md);
+  }
+
+  .hero__word {
+    --word-offset: 40%;
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(var(--word-offset));
+    animation: wordReveal 0.9s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    animation-delay: calc(var(--index, 0) * 0.09s);
+    will-change: transform, opacity;
+  }
+
+  @keyframes wordReveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Если GSAP не загрузился — показываем слова как запасной вариант */
+  .js-ready .hero__word {
+    /* GSAP сам установит opacity и transform */
+  }
+
+  /* Для пользователей с отключенной анимацией */
+  @media (prefers-reduced-motion: reduce) {
+    .hero__word {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+  }
+
+  /* ==========================================================================
+   АДАПТИВНАЯ ВЕРСТКА: HeroTitle
+   ========================================================================== */
+
+  /* ===== Планшеты (до 992px) ===== */
+  @media (max-width: 992px) {
+    .hero__title {
+      font-size: clamp(32px, 3.5vw, 48px);
+      gap: 0.1em 0.3em;
+      margin-bottom: var(--space-sm);
+    }
+  }
+
+  /* ===== Мобильные (до 768px) ===== */
+  @media (max-width: 768px) {
+    .hero__title {
+      font-size: clamp(28px, 5vw, 38px);
+      gap: 0.05em 0.2em;
+      margin-bottom: var(--space-sm);
+      line-height: var(--line-height-tight);
+      padding: 0 var(--space-xs);
+    }
+
+    .hero__word {
+      display: inline-block;
+      /* На мобильных слова могут переноситься,
+         оставляем inline-block для правильной анимации */
+    }
+  }
+
+  /* ===== Маленькие телефоны (до 480px) ===== */
+  @media (max-width: 480px) {
+    .hero__title {
+      font-size: clamp(24px, 6vw, 30px);
+      gap: 0.05em 0.15em;
+      margin-bottom: var(--space-xs);
+      padding: 0 4px;
+      line-height: var(--line-height-tight);
+    }
+
+    .hero__word {
+      /* На маленьких экранах каждое слово может быть с новой строки,
+         но оставляем inline-block для анимации */
+    }
+  }
+
+  /* ===== Очень узкие экраны (до 360px) ===== */
+  @media (max-width: 360px) {
+    .hero__title {
+      font-size: clamp(20px, 7vw, 26px);
+      gap: 0.05em 0.1em;
+      margin-bottom: var(--space-xs);
+      padding: 0 2px;
+    }
+  }
+
+  /* ==========================================================================
+     АДАПТАЦИЯ ДЛЯ ДЛИННЫХ ЗАГОЛОВКОВ
+     ========================================================================== */
+
+  /* Если заголовок состоит из 6+ слов - уменьшаем размер */
+  @media (max-width: 768px) {
+    .hero__title:has(.hero__word:nth-child(6)) {
+      font-size: clamp(24px, 4.5vw, 32px);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero__title:has(.hero__word:nth-child(6)) {
+      font-size: clamp(20px, 5vw, 26px);
+    }
+  }
+
+  /* Если заголовок состоит из 8+ слов - ещё меньше */
+  @media (max-width: 768px) {
+    .hero__title:has(.hero__word:nth-child(8)) {
+      font-size: clamp(20px, 4vw, 28px);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero__title:has(.hero__word:nth-child(8)) {
+      font-size: clamp(18px, 4.5vw, 22px);
+    }
+  }
+
+  /* ==========================================================================
+     АНИМАЦИОННЫЕ УЛУЧШЕНИЯ
+     ========================================================================== */
+
+  /* Улучшаем производительность анимации на мобильных */
+  @media (max-width: 768px) {
+    .hero__word {
+      --word-offset: 80%;  /* стало — просто переопределяем стартовую точку, без !important */
+    }
+
+    /* Для устройств с медленным процессором */
+    @media (prefers-reduced-motion: reduce) {
+      .hero__word {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+      }
+    }
+  }
+
+  /* Адаптация для экранов с Retina дисплеем */
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .hero__title {
+      /* На Retina экранах шрифт может выглядеть тоньше */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  }
+
+</style>

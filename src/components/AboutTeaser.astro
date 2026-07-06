@@ -1,0 +1,237 @@
+---
+const stats = [
+  { number: '25+', label: 'года на рынке Беларуси' },
+  { number: 'B2B', label: 'работаем с бизнесом' }
+];
+const aboutList = [
+  { text: 'Офис — Минск' },
+  { text: 'Акцент — B2B-проекты' },
+  { text: 'Специализация — веб‑сайты услуг, лендинги, сайты-визитки, промо-страницы и каталоги' }
+];
+---
+<section class="about-teaser section--padded">
+  <div class="container">
+    <h2 class="section-heading">О нас </h2>
+    <p class="section-heading__subtitle">Веб-направление <a href="https://www.imc.by" target="_blank" rel="noopener" class="about-page__link">
+      IMC COMPUTERS<span class="sr-only"> (откроется в новой вкладке)</span>
+    </a>— создаём веб‑сайты услуг, лендинги, сайты-визитки, промо-страницы и каталоги, подбирая решение под задачи каждого бизнеса. </p>
+    <div class="about-teaser__grid">
+      <div class="about-teaser__text">
+        <h3 class="block-heading">Разрабатываем веб‑сайты для бизнеса с понятным процессом и прозрачными условиями.</h3>
+        <p class="about-teaser__title">SITE2U — веб-направление IMC COMPUTERS</p>
+        <ul class="about-teaser__list">
+          {aboutList.map((item) => (
+              <li>{item.text}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="about-teaser__stats">
+        {stats.map((stat) => (
+            <div class="stat-block card">
+              <span class="stat-block__number">{stat.number}</span>
+              <span class="stat-block__label">{stat.label}</span>
+            </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .about-teaser__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .about-teaser__list li {
+    color: var(--color-text-secondary);
+    padding-left: var(--space-sm);
+    position: relative;
+  }
+
+  .about-teaser__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 5px;
+    height: 5px;
+    border-radius: var(--radius-circle);
+    background: var(--color-accent);
+  }
+
+  .about-teaser{
+    background: var(--color-bg-secondary);
+  }
+
+  .about-teaser__grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-2xl);
+    align-items: center;
+  }
+
+  .about-teaser__text p {
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin: var(--space-sm) 0 var(--space-md);
+  }
+
+  .about-teaser__link {
+    display: inline-block;
+    color: var(--color-accent-hover);
+    font-weight: var(--font-weight-semibold);
+    transition: var(--transition-color);
+  }
+
+  .about-teaser__link:hover {
+    color: var(--color-text-primary);
+  }
+
+  .about-teaser__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+  }
+
+
+  /* ==========================================================================
+     АДАПТИВНАЯ ВЕРСТКА: about-teaser
+     ========================================================================== */
+
+  /* ===== Планшеты (768px - 991px) ===== */
+  @media (max-width: 991px) {
+    .about-teaser__grid {
+      gap: var(--space-xl);
+    }
+
+    .about-teaser__stats {
+      gap: var(--space-xs);
+    }
+
+    .stat-block {
+      padding: var(--space-md) var(--space-sm);
+      min-width: 120px;
+    }
+
+    .stat-block__number {
+      font-size: var(--font-size-xl);
+    }
+
+    .stat-block__label {
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  /* ===== Мобильные (до 767px) ===== */
+  @media (max-width: 767px) {
+    .about-teaser__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+
+    .about-teaser__text {
+      order: 1;
+    }
+
+    .about-teaser__stats {
+      order: 2;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-xs);
+    }
+
+    .stat-block {
+      padding: var(--space-sm);
+      min-width: 0;
+    }
+
+    .stat-block__number {
+      font-size: var(--font-size-xl);
+    }
+
+    .stat-block__label {
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-tight);
+    }
+
+    .about-teaser__text p {
+      margin: var(--space-xs) 0 var(--space-sm);
+    }
+
+    .about-teaser__link {
+      margin-top: var(--space-xs);
+    }
+  }
+
+  /* ===== Маленькие телефоны (до 480px) ===== */
+  @media (max-width: 480px) {
+    .about-teaser__stats {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xs);
+    }
+
+    .stat-block {
+      padding: var(--space-sm) var(--space-xs);
+    }
+
+    .stat-block__number {
+      font-size: var(--font-size-lg);
+      margin-bottom: 4px;
+    }
+
+    .stat-block__label {
+      font-size: var(--font-size-xs);
+    }
+
+    .section-heading {
+      font-size: var(--font-size-2xl);
+    }
+
+    .section-heading__subtitle {
+      font-size: var(--font-size-base);
+      margin-bottom: var(--space-md);
+      padding: 0 5px;
+    }
+
+    .block-heading {
+      font-size: var(--font-size-md);
+    }
+
+    .about-teaser__text p {
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .about-teaser__link {
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  /* ===== Очень узкие экраны (до 360px) ===== */
+  @media (max-width: 360px) {
+    .about-teaser__stats {
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .stat-block {
+      padding: var(--space-xs);
+    }
+
+    .stat-block__number {
+      font-size: var(--font-size-md);
+    }
+
+    .stat-block__label {
+      font-size: 12px;
+    }
+
+    .container {
+      padding: 0 12px;
+    }
+  }
+
+</style>

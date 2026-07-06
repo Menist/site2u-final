@@ -1,0 +1,310 @@
+---
+const navItems = [
+  { label: "Главная", href: "/" },
+  { label: "Корпоративные веб‑сайты", href: "/uslugi/corporate-site/" },
+  { label: "Лендинги", href: "/uslugi/landing/" },
+  { label: "Контакты", href: "/kontakty/" },
+];
+const currentYear = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container">
+
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <span class="footer__logo">SITE2U</span>
+        <p class="footer__desc">Веб-направление компании IMC COMPUTERS. Создаём веб‑сайты для бизнеса в Беларуси.</p>
+      </div>
+
+      <nav class="footer__nav" aria-label="Навигация в подвале сайта">
+        <p class="footer__nav-title">Навигация</p>
+        <ul class="footer__nav-list">
+          {navItems.map((item) => (
+              <li><a href={item.href} class="footer__nav-link">{item.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="footer__contacts">
+        <p class="footer__nav-title">Контакты</p>
+        <address>
+          <ul class="footer__contacts-list">
+            <li><a href="tel:+375296195265" class="footer__contact-link">+375 (29) 619-52-65</a></li>
+            <li><a href="mailto:imc@imc.by" class="footer__contact-link">imc@imc.by</a></li>
+            <li class="footer__address">Минск, проспект Независимости, 68-2, офис 108</li>
+          </ul>
+        </address>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copy">© {currentYear} SITE2U — IMC COMPUTERS LTD</p>
+      <p class="footer__made">Разработка веб‑сайтов для бизнеса</p>
+    </div>
+
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-bg-primary);
+    border-top: 1px solid var(--color-divider);
+    padding-top: var(--space-sm);
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: var(--space-2xl);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .footer__logo {
+    display: inline-block;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .footer__desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    max-width: 260px;
+  }
+
+  .footer__nav-title {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-xs);
+  }
+
+  .footer__nav-list,
+  .footer__contacts-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .footer__nav-link,
+  .footer__contact-link {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    transition: var(--transition-color);
+  }
+
+  .footer__nav-link:hover,
+  .footer__contact-link:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .footer__address {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) 0;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .footer__copy,
+  .footer__made {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+  }
+
+  /* ==========================================================================
+     АДАПТИВ
+     ========================================================================== */
+
+  /* ── Планшет (до 992px) ── */
+  @media (max-width: 992px) {
+    .footer__grid {
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: var(--space-xl);
+    }
+
+    .footer__desc {
+      max-width: 100%;
+    }
+  }
+
+  /* ── Планшет портрет (до 768px) ──
+     Бренд занимает всю верхнюю строку,
+     навигация и контакты — рядом в двух колонках.
+  ── */
+  @media (max-width: 768px) {
+    .footer {
+      padding-top: var(--space-md);
+    }
+
+    .footer__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md) var(--space-xl);
+      padding-bottom: var(--space-md);
+    }
+
+    /* Бренд — сверху на всю ширину */
+    .footer__brand {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-md);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--color-divider);
+    }
+
+    .footer__logo {
+      font-size: var(--font-size-md);
+      margin-bottom: 0;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .footer__desc {
+      font-size: var(--font-size-xs);
+      max-width: 100%;
+      color: var(--color-text-secondary);
+      line-height: var(--line-height-normal);
+    }
+
+    /* Навигация и контакты — две равные колонки */
+    .footer__nav,
+    .footer__contacts {
+      min-width: 0;
+    }
+
+    .footer__nav-title {
+      font-size: 11px;
+      margin-bottom: var(--space-xs);
+    }
+
+    .footer__nav-list,
+    .footer__contacts-list {
+      gap: 8px;
+    }
+
+    .footer__nav-link,
+    .footer__contact-link,
+    .footer__address {
+      font-size: var(--font-size-sm);
+    }
+
+    /* Нижняя строка */
+    .footer__bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      padding: var(--space-sm) 0;
+      gap: var(--space-xs);
+    }
+
+    .footer__copy,
+    .footer__made {
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  /* ── Мобильный (до 480px) ──
+     Та же структура: бренд сверху, навигация + контакты в 2 колонки.
+     Только чуть компактнее.
+  ── */
+  @media (max-width: 480px) {
+    .footer {
+      padding-top: var(--space-sm);
+    }
+
+    .footer__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-sm) var(--space-md);
+      padding-bottom: var(--space-sm);
+    }
+
+    .footer__brand {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      padding-bottom: var(--space-xs);
+    }
+
+    .footer__logo {
+      font-size: var(--font-size-base);
+    }
+
+    .footer__desc {
+      font-size: var(--font-size-xs);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .footer__nav-title {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .footer__nav-list,
+    .footer__contacts-list {
+      gap: 6px;
+    }
+
+    .footer__nav-link,
+    .footer__contact-link,
+    .footer__address {
+      font-size: var(--font-size-xs);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .footer__bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      padding: var(--space-xs) 0;
+    }
+
+    .footer__copy,
+    .footer__made {
+      font-size: 11px;
+    }
+  }
+
+  /* ── Узкие экраны (до 360px) ── */
+  @media (max-width: 360px) {
+    .footer__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xs) var(--space-sm);
+    }
+
+    .footer__logo {
+      font-size: var(--font-size-sm);
+    }
+
+    .footer__nav-link,
+    .footer__contact-link,
+    .footer__address {
+      font-size: 11px;
+    }
+
+    .footer__copy,
+    .footer__made {
+      font-size: 10px;
+    }
+  }
+
+  /* ── Отключение hover на touch ── */
+  @media (hover: none) {
+    .footer__nav-link:hover,
+    .footer__contact-link:hover {
+      color: var(--color-text-secondary);
+    }
+  }
+</style>

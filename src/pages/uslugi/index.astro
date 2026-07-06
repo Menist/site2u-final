@@ -1,0 +1,557 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+const breadcrumbItems = [
+  {label: "Главная", href: "/"},
+  {label: "Услуги", href: "/uslugi/"},
+];
+
+const advantages = [
+  {text: 'Оплата по факту готовой работы — без предоплаты'},
+  {text: 'Работаем с вашим макетом или помогаем разработать дизайн'},
+  {text: 'Состав проекта определяется вместе с вами — оплачиваете только нужные работы'},
+  {text: 'Остаёмся на связи после запуска и отвечаем на вопросы'},
+];
+---
+
+<Layout title="Разработка веб‑сайтов в Беларуси | site2u.by"
+        description="Создаём лендинги и корпоративные веб‑сайты для бизнеса в Беларуси. Постоплата, адаптив, SEO-готовность по запросу.">
+  <Breadcrumbs items={breadcrumbItems}/>
+<section class="page--padded">
+  <div class="container">
+    <div class="uslugi-page__heading">
+      <h1 class="page-heading">Разработка веб‑сайтов для бизнеса в Беларуси</h1>
+      <span class="accent-rule"></span>
+      <p class="uslugi-page__lead">Разрабатываем лендинги и веб‑сайты для бизнеса. Работаем по вашему макету или создаём дизайн с нуля, а SEO-подготовку подключаем при необходимости.</p>
+    </div>
+
+    <div class="uslugi-page__services">
+      <a href="/uslugi/landing/" class="uslugi-teaser card">
+        <div class="uslugi-teaser__body">
+          <h2 class="uslugi-teaser__title">Лендинг</h2>
+          <p class="uslugi-teaser__desc">Одностраничный веб‑сайт для продвижения услуги, акции или мероприятия. Подходит для кафе, салонов и промо-проектов.</p>
+          <span class="uslugi-teaser__term">5–10 дней</span>
+        </div>
+        <span class="uslugi-teaser__arrow" aria-hidden="true">→</span>
+      </a>
+
+      <a href="/uslugi/corporate-site/" class="uslugi-teaser card card--accent">
+        <div class="uslugi-teaser__body">
+          <h2 class="uslugi-teaser__title">Корпоративный веб‑сайт</h2>
+          <p class="uslugi-teaser__desc">Многостраничный веб‑сайт, который помогает рассказать о компании, услугах и способах связи. Подходит для клиник, студий и агентств.</p>
+          <span class="uslugi-teaser__term">3–4 недели</span>
+        </div>
+        <span class="uslugi-teaser__arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="uslugi-page__advantages block--accent-border">
+      <h2 class="block-heading">Почему выбирают нас</h2>
+      <ul class="uslugi-advantages">
+        {advantages.map((item) => (
+            <li class="uslugi-advantages__item">
+              <svg class="uslugi-advantages__icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+              </svg>
+              <span>{item.text}</span>
+            </li>
+        ))}
+      </ul>
+    </div>
+    <p class="uslugi-page__cta-text">Каждый проект отличается. Кому-то нужен лендинг для запуска новой услуги, а кому-то — многостраничный веб‑сайт компании. Поэтому перед началом работы мы обсуждаем задачи проекта и предлагаем только те решения, которые действительно будут полезны.</p>
+
+    <div class="uslugi-page__cta">
+      <a href="/kontakty/" class="uslugi-page__btn">Обсудить проект</a>
+    </div>
+
+  </div>
+</section>
+</Layout>
+
+<style>
+  .uslugi-page__heading {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .uslugi-page__lead {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-md);
+    max-width: var(--container-sm);
+    margin-top: var(--space-sm);
+    line-height: var(--line-height-relaxed);
+  }
+
+  /* Тизеры услуг */
+  .uslugi-page__services {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-2xl);
+  }
+  .uslugi-page__cta-text{
+    max-width: 950px;
+    margin-bottom: var(--space-2xl);
+  }
+  @media (max-width: 768px) {
+    .uslugi-page__services {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .uslugi-teaser {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+  }
+
+  .uslugi-teaser__title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-xs);
+  }
+
+  .uslugi-teaser__desc {
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--space-sm);
+  }
+
+  .uslugi-teaser__term {
+    display: inline-block;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-accent-hover);
+    background: rgba(255, 190, 73, 0.1);
+    padding: 4px var(--space-sm);
+    border-radius: var(--radius-full);
+  }
+
+  .uslugi-teaser__arrow {
+    font-size: var(--font-size-xl);
+    color: var(--color-accent);
+    flex-shrink: 0;
+    transition: transform var(--transition-base);
+  }
+
+  .uslugi-teaser:hover .uslugi-teaser__arrow {
+    transform: translateX(4px);
+  }
+
+  /* Преимущества */
+  .uslugi-page__advantages {
+    margin-bottom: var(--space-md);
+    max-width: var(--container-sm);
+    border-radius: var(--radius-sm);
+    background: none;
+  }
+
+  .uslugi-advantages {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+  }
+
+  .uslugi-advantages__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .uslugi-advantages__icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: var(--color-accent-hover);
+    margin-top: 2px;
+  }
+
+  /* CTA */
+  .uslugi-page__cta {
+    display: flex;
+  }
+
+  .uslugi-page__btn {
+    display: inline-block;
+    background: var(--color-accent);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    padding: var(--space-sm) var(--space-xl);
+    border-radius: var(--radius-full);
+    transition: background var(--transition-base), transform var(--transition-base);
+  }
+
+  .uslugi-page__btn:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  /* ==========================================================================
+   АДАПТИВНАЯ ВЕРСТКА: uslugi-page (список услуг)
+   ========================================================================== */
+
+  /* ===== Планшеты (до 992px) ===== */
+  @media (max-width: 992px) {
+    .uslugi-page__heading {
+      margin-bottom: var(--space-xl);
+    }
+
+    .uslugi-page__lead {
+      font-size: var(--font-size-base);
+      max-width: 100%;
+      margin-top: var(--space-xs);
+    }
+
+    .uslugi-page__services {
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .uslugi-teaser {
+      padding: var(--space-md);
+      gap: var(--space-sm);
+    }
+
+    .uslugi-teaser__title {
+      font-size: var(--font-size-lg);
+    }
+
+    .uslugi-teaser__desc {
+      font-size: var(--font-size-sm);
+    }
+
+    .uslugi-teaser__arrow {
+      font-size: var(--font-size-lg);
+    }
+
+    .uslugi-page__advantages {
+      max-width: 100%;
+      margin-bottom: var(--space-md);
+    }
+
+    .uslugi-advantages {
+      gap: var(--space-xs);
+      margin-top: var(--space-sm);
+    }
+
+    .uslugi-advantages__item {
+      font-size: var(--font-size-sm);
+      gap: var(--space-xs);
+    }
+
+    .uslugi-advantages__icon {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+    }
+
+    .uslugi-page__cta-text {
+      max-width: 100%;
+      margin-bottom: var(--space-xl);
+      font-size: var(--font-size-base);
+    }
+
+    .uslugi-page__btn {
+      padding: var(--space-sm) var(--space-lg);
+      font-size: var(--font-size-base);
+    }
+  }
+
+  /* ===== Мобильные (до 768px) ===== */
+  @media (max-width: 768px) {
+    .uslugi-page__heading {
+      margin-bottom: var(--space-lg);
+    }
+
+    .uslugi-page__lead {
+      font-size: var(--font-size-sm);
+      margin-top: var(--space-xs);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .uslugi-page__services {
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-lg);
+    }
+
+    .uslugi-teaser {
+      padding: var(--space-md);
+      gap: var(--space-sm);
+      border-radius: var(--radius-sm);
+    }
+
+    .uslugi-teaser:hover {
+      transform: none;
+      box-shadow: var(--shadow-card);
+    }
+
+    .uslugi-teaser__title {
+      font-size: var(--font-size-base);
+      margin-bottom: 4px;
+    }
+
+    .uslugi-teaser__desc {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-xs);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .uslugi-teaser__term {
+      font-size: var(--font-size-xs);
+      padding: 3px var(--space-sm);
+    }
+
+    .uslugi-teaser__arrow {
+      font-size: var(--font-size-md);
+    }
+
+    .uslugi-teaser:hover .uslugi-teaser__arrow {
+      transform: none;
+    }
+
+    .uslugi-page__advantages {
+      margin-bottom: var(--space-sm);
+      padding-left: var(--space-md);
+      border-left-width: 2px;
+    }
+
+    .uslugi-advantages {
+      gap: var(--space-xs);
+      margin-top: var(--space-sm);
+    }
+
+    .uslugi-advantages__item {
+      font-size: var(--font-size-sm);
+      gap: var(--space-xs);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .uslugi-advantages__icon {
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+    }
+
+    .uslugi-page__cta-text {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-lg);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .uslugi-page__cta {
+      justify-content: center;
+    }
+
+    .uslugi-page__btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-xs) var(--space-lg);
+      font-size: var(--font-size-sm);
+      min-height: var(--touch-target-min);
+      width: 100%;
+      max-width: 280px;
+      text-align: center;
+    }
+
+    .uslugi-page__btn:hover {
+      transform: none;
+    }
+  }
+
+  /* ===== Маленькие телефоны (до 480px) ===== */
+  @media (max-width: 480px) {
+    .uslugi-page__heading {
+      margin-bottom: var(--space-md);
+    }
+
+    .uslugi-page__lead {
+      font-size: var(--font-size-sm);
+    }
+
+    .uslugi-page__services {
+      gap: var(--space-xs);
+      margin-bottom: var(--space-md);
+    }
+
+    .uslugi-teaser {
+      padding: var(--space-sm);
+      gap: var(--space-xs);
+      flex-wrap: wrap;
+    }
+
+    .uslugi-teaser__body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .uslugi-teaser__title {
+      font-size: var(--font-size-base);
+    }
+
+    .uslugi-teaser__desc {
+      font-size: var(--font-size-xs);
+      margin-bottom: 4px;
+    }
+
+    .uslugi-teaser__term {
+      font-size: 11px;
+      padding: 2px var(--space-xs);
+    }
+
+    .uslugi-teaser__arrow {
+      font-size: var(--font-size-base);
+      align-self: center;
+    }
+
+    .uslugi-page__advantages {
+      padding-left: var(--space-sm);
+      margin-bottom: var(--space-sm);
+    }
+
+    .uslugi-advantages__item {
+      font-size: var(--font-size-xs);
+      gap: 4px;
+    }
+
+    .uslugi-advantages__icon {
+      width: 14px;
+      height: 14px;
+      margin-top: 2px;
+    }
+
+    .uslugi-page__cta-text {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-md);
+    }
+
+    .uslugi-page__btn {
+      padding: var(--space-xs) var(--space-md);
+      font-size: var(--font-size-sm);
+      max-width: 100%;
+      min-height: var(--touch-target-min);
+    }
+  }
+
+  /* ===== Очень узкие экраны (до 360px) ===== */
+  @media (max-width: 360px) {
+    .uslugi-page__lead {
+      font-size: var(--font-size-xs);
+    }
+
+    .uslugi-teaser {
+      padding: var(--space-xs);
+      gap: 4px;
+    }
+
+    .uslugi-teaser__title {
+      font-size: var(--font-size-sm);
+    }
+
+    .uslugi-teaser__desc {
+      font-size: var(--font-size-xs);
+    }
+
+    .uslugi-teaser__term {
+      font-size: 10px;
+      padding: 2px 6px;
+    }
+
+    .uslugi-teaser__arrow {
+      font-size: var(--font-size-sm);
+    }
+
+    .uslugi-page__advantages {
+      padding-left: var(--space-xs);
+    }
+
+    .uslugi-advantages__item {
+      font-size: var(--font-size-xs);
+      gap: 4px;
+    }
+
+    .uslugi-advantages__icon {
+      width: 12px;
+      height: 12px;
+    }
+
+    .uslugi-page__cta-text {
+      font-size: var(--font-size-xs);
+    }
+
+    .uslugi-page__btn {
+      font-size: var(--font-size-xs);
+      padding: 6px var(--space-sm);
+      min-height: 38px;
+    }
+  }
+
+  /* ==========================================================================
+     ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ
+     ========================================================================== */
+
+  /* Адаптация для сетки тизеров на планшетах */
+  @media (min-width: 769px) and (max-width: 992px) {
+    .uslugi-page__services {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-sm);
+    }
+
+    .uslugi-teaser {
+      padding: var(--space-md);
+    }
+  }
+
+  /* Улучшение читаемости заголовка страницы */
+  @media (max-width: 768px) {
+    .uslugi-page__heading .page-heading {
+      font-size: var(--font-size-xl);
+      margin-bottom: var(--space-xs);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .uslugi-page__heading .page-heading {
+      font-size: var(--font-size-lg);
+    }
+  }
+
+  @media (max-width: 360px) {
+    .uslugi-page__heading .page-heading {
+      font-size: var(--font-size-base);
+    }
+  }
+
+  /* Отключение hover на touch-устройствах */
+  @media (hover: none) {
+    .uslugi-teaser:hover {
+      transform: none !important;
+      box-shadow: var(--shadow-card) !important;
+    }
+
+    .uslugi-teaser:hover .uslugi-teaser__arrow {
+      transform: none !important;
+    }
+
+    .uslugi-page__btn:hover {
+      transform: none !important;
+    }
+  }
+
+  /* Адаптация для длинных текстов в преимуществах */
+  @media (max-width: 480px) {
+    .uslugi-advantages__item span {
+      word-break: break-word;
+      hyphens: auto;
+    }
+  }
+
+</style>

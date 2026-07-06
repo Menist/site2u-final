@@ -1,0 +1,351 @@
+---
+interface NavItem {
+  label: string;
+  href: string;
+}
+
+const { navItems } = Astro.props as { navItems: NavItem[] };
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+function isActive(href: string) {
+  const cleanHref = href.replace(/\/$/, '') || '/';
+  if (cleanHref === '/') return pathname === '/';
+  return pathname === cleanHref || pathname.startsWith(cleanHref + '/');
+}
+---
+
+<nav class="mobile-menu" id="mobileMenu" aria-label="Мобильное меню">
+  <div class="mobile-menu__overlay" id="mobileMenuOverlay"></div>
+
+  <div class="mobile-menu__panel">
+    <div class="mobile-menu__header">
+      <span class="mobile-menu__logo">SITE2U</span>
+      <button class="mobile-menu__close" id="mobileMenuClose" aria-label="Закрыть меню">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="23" y1="1" x2="1" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <ul class="mobile-menu__list">
+      {navItems.map((item) => (
+          <li class="mobile-menu__item">
+            <a
+                href={item.href}
+                class={`mobile-menu__link ${isActive(item.href) ? 'active' : ''}`}
+                data-mobile-link
+            >
+              {item.label}
+            </a>
+          </li>
+      ))}
+    </ul>
+
+    <div class="mobile-menu__footer">
+      <a href="/kontakty/" class="mobile-menu__cta" data-mobile-link data-track="mobile_menu_cta">
+        Обсудить проект
+      </a>
+    </div>
+  </div>
+</nav>
+
+<style>
+  /* ===== Мобильное меню ===== */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+  }
+
+  .mobile-menu.is-open {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  .mobile-menu__overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--color-overlay-dark);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .mobile-menu__panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(320px, 85%);
+    height: 100%;
+    background: var(--color-bg-primary);
+    padding: var(--space-lg) var(--space-md);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    overflow-y: auto;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-menu.is-open .mobile-menu__panel {
+    transform: translateX(0);
+    transition: transform 0.35s cubic-bezier(0.0, 0, 0.2, 1);
+  }
+
+  .mobile-menu__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .mobile-menu__logo {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    letter-spacing: 3px;
+  }
+
+  .mobile-menu__close {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-circle);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: var(--transition-bg), var(--transition-transform);
+    min-height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+  }
+
+  .mobile-menu__close:hover {
+    background: var(--color-accent);
+    transform: rotate(90deg);
+  }
+
+  .mobile-menu__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    flex: 1;
+    padding: 0;
+    list-style: none;
+  }
+
+  .mobile-menu__item {
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .mobile-menu__link {
+    display: block;
+    padding: var(--space-sm) 0;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color var(--transition-base), transform 0.2s ease;
+  }
+
+  .mobile-menu__link:hover {
+    color: var(--color-accent-hover);
+    transform: translateX(4px);
+  }
+
+  .mobile-menu__link.active {
+    color: var(--color-accent);
+  }
+
+  .mobile-menu__footer {
+    margin-top: auto;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-divider);
+  }
+
+  .mobile-menu__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: var(--space-sm) var(--space-xl);
+    background: var(--color-accent);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-base);
+    border-radius: var(--radius-full);
+    text-decoration: none;
+    transition: var(--transition-bg), var(--transition-transform);
+    min-height: var(--touch-target-min);
+  }
+
+  .mobile-menu__cta:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  /* ===== Адаптация для мобильного меню ===== */
+  @media (max-width: 480px) {
+    .mobile-menu__panel {
+      width: 100%;
+      padding: var(--space-md);
+    }
+
+    .mobile-menu__logo {
+      font-size: var(--font-size-base);
+    }
+
+    .mobile-menu__link {
+      font-size: var(--font-size-lg);
+      padding: var(--space-xs) 0;
+    }
+
+    .mobile-menu__close {
+      width: 40px;
+      height: 40px;
+    }
+
+    .mobile-menu__cta {
+      font-size: var(--font-size-sm);
+      padding: var(--space-xs) var(--space-lg);
+    }
+  }
+
+  @media (max-width: 360px) {
+    .mobile-menu__panel {
+      padding: var(--space-sm);
+    }
+
+    .mobile-menu__logo {
+      font-size: var(--font-size-sm);
+      letter-spacing: 2px;
+    }
+
+    .mobile-menu__link {
+      font-size: var(--font-size-base);
+      padding: 6px 0;
+    }
+
+    .mobile-menu__close {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  /* Отключение скролла body при открытом меню */
+  body.menu-open {
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const menu = document.getElementById('mobileMenu') as HTMLElement | null;
+    const overlay = document.getElementById('mobileMenuOverlay');
+    const closeBtn = document.getElementById('mobileMenuClose');
+    const panel = document.querySelector('.mobile-menu__panel') as HTMLElement | null;
+    const links = document.querySelectorAll<HTMLAnchorElement>('[data-mobile-link]');
+
+    if (!menu) return; // дальше TypeScript знает, что menu точно HTMLElement
+
+    // Элемент, на который нужно вернуть фокус после закрытия меню
+    // (обычно это кнопка-бургер, из Header.astro)
+    let lastFocusedElement: HTMLElement | null = null;
+
+    function getFocusableElements(): HTMLElement[] {
+      if (!panel) return [];
+      return Array.from(
+        panel.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+    }
+
+    function trapFocus(e: KeyboardEvent) {
+      if (e.key !== 'Tab') return;
+      const focusable = getFocusableElements();
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    function openMenu() {
+      lastFocusedElement = document.activeElement as HTMLElement | null;
+
+      menu!.classList.add('is-open');
+      document.body.classList.add('menu-open');
+
+      // Переводим фокус в панель — на кнопку закрытия (preventScroll, чтобы избежать
+      // неожиданной прокрутки страницы при программном фокусе)
+      closeBtn?.focus({ preventScroll: true });
+    }
+
+    function closeMenu() {
+      menu!.classList.remove('is-open');
+      document.body.classList.remove('menu-open');
+      const burger = document.getElementById('burgerBtn');
+      if (burger) {
+        burger.classList.remove('is-active');
+        burger.setAttribute('aria-expanded', 'false');
+      }
+
+      // Возвращаем фокус туда, откуда меню было открыто
+      lastFocusedElement?.focus({ preventScroll: true });
+    }
+
+    (window as Window & { openMobileMenu?: () => void }).openMobileMenu = openMenu;
+    (window as Window & { closeMobileMenu?: () => void }).closeMobileMenu = closeMenu;
+
+    closeBtn?.addEventListener('click', closeMenu);
+    overlay?.addEventListener('click', closeMenu);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.classList.contains('is-open')) closeMenu();
+    });
+
+    // Focus trap — работает, только пока меню открыто
+    menu.addEventListener('keydown', (e) => {
+      if (menu.classList.contains('is-open')) trapFocus(e);
+    });
+
+    links.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http')) {
+          closeMenu();
+          return;
+        }
+        e.preventDefault();
+        closeMenu();
+        setTimeout(() => { window.location.href = href; }, 380);
+      });
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768 && menu.classList.contains('is-open')) {
+        closeMenu();
+      }
+    });
+  });
+</script>

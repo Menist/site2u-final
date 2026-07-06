@@ -1,0 +1,1004 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+const breadcrumbItems = [
+  { label: "Главная", href: "/" },
+  { label: "Контакты", href: "/kontakty/" },
+];
+
+const serviceId = import.meta.env.EMAILJS_SERVICE_ID;
+const templateId = import.meta.env.EMAILJS_TEMPLATE_ID;
+const publicKey = import.meta.env.EMAILJS_PUBLIC_KEY;
+---
+
+<Layout title="Контакты | site2u.by"
+        description="Свяжитесь с нами: телефон, email, адрес офиса в Минске. Работаем удалённо по всей Беларуси.">
+  <Breadcrumbs items={breadcrumbItems} />
+
+  <section class="contacts page--padded">
+    <div class="container">
+      <div class="contacts__grid">
+        <div class="contacts__left">
+
+          <div class="contacts__info">
+            <h2 class="contacts-heading">Свяжитесь с нами</h2>
+            <span class="accent-rule"></span>
+
+            <div class="contacts__group">
+              <a href="tel:+375293195265" class="contacts__link" data-track="click_phone_contacts">+375 (29) 319-52-65</a>
+              <a href="mailto:imc@imc.by" class="contacts__link" data-track="click_email_contacts">imc@imc.by</a>
+            </div>
+
+            <p class="contacts__address">Офис в Минске. Работаем с клиентами по всей Беларуси.</p>
+
+            <div class="contacts__socials">
+              <a href="https://t.me/imc_by" class="contacts__social" data-track="click_telegram">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M21.6 3.8L18.2 20.1C17.9 21.3 17.2 21.6 16.2 21L11.7 17.7L9.5 19.8C9.2 20.1 9 20.4 8.4 20.4L8.7 15.7L17.4 7.8C17.8 7.4 17.5 7.2 17 7.6L6.3 14.3L1.7 12.8C0.7 12.5 0.7 11.8 1.9 11.3L20.1 4.3C21 4 21.8 4.5 21.6 3.8Z" fill="currentColor"/>
+                </svg>
+                <span>Telegram</span>
+              </a>
+              <a href="viber://chat?number=+375296195265" class="contacts__social" data-track="click_viber">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M18.9 2.8C16.5 1.2 7.5 1.2 5.1 2.8C2.4 4.7 2.2 8.4 2.5 11.2C2.8 14 4.5 16 6.7 17.3L6.2 21L10 18.8C12.5 19.2 17.8 19 19.2 16.8C20.8 14.2 21.5 4.5 18.9 2.8Z" fill="currentColor"/>
+                  <path d="M8 8C9.5 11 11.5 13 15 14" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+                <span>Viber</span>
+              </a>
+            </div>
+            <p class="contacts__text block--accent-border">Есть готовое техническое задание, макет или только идея? Расскажите о проекте — обсудим возможные варианты реализации.</p>
+          </div>
+
+          <div class="contacts__form-card card">
+            <h2 class="contacts__form-title">Обсудить проект</h2>
+
+            <form class="contacts__form" id="contactForm" novalidate>
+              <input type="hidden" id="cfg-result-hidden" name="cfg_result" value=""/>
+
+              <div class="contacts__field">
+                <input
+                    type="text"
+                    id="form-name"
+                    name="from_name"
+                    class="contacts__input"
+                    placeholder=" "
+                    required
+                    data-validate="name"
+                    autocomplete="name"
+                />
+                <label for="form-name">Ваше имя *</label>
+              </div>
+
+              <div class="contacts__field">
+                <input
+                    type="tel"
+                    id="form-phone"
+                    name="from_phone"
+                    class="contacts__input"
+                    placeholder=" "
+                    required
+                    data-validate="phone"
+                    autocomplete="tel"
+                />
+                <label for="form-phone">Телефон *</label>
+              </div>
+
+              <div class="contacts__field">
+                <textarea
+                    id="form-message"
+                    name="message"
+                    class="contacts__input contacts__textarea"
+                    placeholder=" "
+                    rows="4"
+                    data-validate="message"
+                ></textarea>
+                <label for="form-message">Кратко о проекте</label>
+              </div>
+
+              <button type="submit" class="contacts__submit" id="formSubmit">
+                Отправить
+              </button>
+
+              <p class="contacts__status" id="formStatus" aria-live="polite"></p>
+            </form>
+          </div>
+
+        </div>
+
+        <!-- Карта -->
+        <div class="contacts__map-wrapper">
+          <p class="contacts__map__header">Офис находится в Минске.<br> Работаем с клиентами по всей Беларуси.</p>
+
+          <div class="contacts__map">
+            <div class="contacts__map-overlay">
+              <div class="contacts__map-hint">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                  <circle cx="12" cy="9" r="2.5"/>
+                </svg>
+                <span>г. Минск, пр. Независимости, д. 68-2, к.108</span>
+              </div>
+            </div>
+
+            <a href="https://yandex.by/maps/?rtext=~53.921621,27.600243&rtt=auto"
+               target="_blank" rel="noopener" class="contacts__map-route">
+              Построить маршрут
+            </a>
+
+            <iframe
+                title="Карта проезда до офиса site2u.by в Минске"
+                data-src="https://yandex.ru/map-widget/v1/?ll=27.600281%2C53.921440&z=17&pt=27.600243,53.921621,pm2orgm"
+                width="100%"
+                height="100%"
+                frameborder="0"
+                allowfullscreen="true"
+                loading="lazy"
+                class="js-lazy-iframe">
+            </iframe>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contacts__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+    align-items: end;
+  }
+
+  .contacts-heading {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .contacts__text {
+    color: var(--color-text-secondary);
+    max-width: var(--container-sm);
+    margin-top: var(--space-md);
+    padding-left: var(--space-sm);
+  }
+
+  /* Инфо */
+  .contacts__info {
+    margin-bottom: var(--space-lg);
+  }
+
+  .contacts__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin: var(--space-lg) 0;
+  }
+
+  .contacts__link {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    transition: var(--transition-color);
+    width: max-content;
+  }
+
+  .contacts__link:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .contacts__address {
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--space-lg);
+  }
+
+  .contacts__socials {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .contacts__social {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    height: 42px;
+    padding: 0 var(--space-md);
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-full);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    transition: border-color var(--transition-base), color var(--transition-base), transform var(--transition-base);
+  }
+
+  .contacts__social svg {
+    color: var(--color-accent-hover);
+    width: 18px;
+    height: 18px;
+  }
+
+  .contacts__social:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  /* Форма */
+  .contacts__form-card {
+    padding: var(--space-lg);
+  }
+
+  .contacts__form-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-lg);
+  }
+
+  .contacts__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .contacts__field {
+    position: relative;
+  }
+
+  .contacts__input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-full);
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-base);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .contacts__input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(255, 190, 73, 0.15);
+  }
+
+  .contacts__input.is-error {
+    border-color: #ff7c7c;
+  }
+
+  .contacts__input.is-valid {
+    border-color: #4caf7d;
+  }
+
+  .contacts__field label {
+    position: absolute;
+    left: var(--space-md);
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    transition: 0.25s ease;
+    background: transparent;
+  }
+
+  .contacts__textarea {
+    min-height: 120px;
+    resize: vertical;
+    padding-top: var(--space-sm);
+  }
+
+  .contacts__textarea + label {
+    top: var(--space-sm);
+    transform: none;
+  }
+
+  .contacts__input:focus + label,
+  .contacts__input:not(:placeholder-shown) + label {
+    top: -10px;
+    transform: none;
+    padding: 0 6px;
+    background: var(--color-bg-primary);
+    color: var(--color-accent-hover);
+    font-size: var(--font-size-xs);
+  }
+
+  .contacts__submit {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--color-accent);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    transition: background var(--transition-base), transform var(--transition-base);
+  }
+
+  .contacts__submit:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  .contacts__submit:disabled {
+    opacity: 0.6;
+    cursor: default;
+    transform: none;
+  }
+
+  .contacts__status {
+    min-height: 24px;
+    font-size: var(--font-size-sm);
+  }
+
+  .contacts__status.is-success { color: #4caf7d; }
+  .contacts__status.is-error { color: #ff7c7c; }
+
+  /* Карта */
+  .contacts__map-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .contacts__map__header {
+    text-align: center;
+    padding: var(--space-xs);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-sm);
+  }
+
+  .contacts__map {
+    position: relative;
+    flex: 1;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    border: 1px solid var(--color-divider);
+    min-height: 200px;
+  }
+
+  .contacts__map iframe {
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+    transition: opacity var(--transition-base);
+  }
+
+  .contacts__map:hover iframe {
+    opacity: 1;
+  }
+
+  .contacts__map-overlay {
+    position: absolute;
+    top: 57%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    z-index: 4;
+    transition: opacity var(--transition-base);
+  }
+
+  .contacts__map:hover .contacts__map-overlay {
+    opacity: 0.2;
+  }
+
+  .contacts__map-hint {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-card);
+    max-width: 280px;
+  }
+
+  .contacts__map-hint svg {
+    flex-shrink: 0;
+    color: var(--color-accent-hover);
+  }
+
+  .contacts__map-hint span {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-normal);
+  }
+
+  .contacts__map-route {
+    position: absolute;
+    bottom: var(--space-xl);
+    left: var(--space-xs);
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    height: 42px;
+    padding: 0 var(--space-md);
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-full);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    transition: border-color var(--transition-base), color var(--transition-base);
+  }
+
+  .contacts__map-route:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent-hover);
+  }
+
+  /* ==========================================================================
+   АДАПТИВНАЯ ВЕРСТКА: contacts
+   ========================================================================== */
+
+  /* ===== Планшеты (до 992px) ===== */
+  @media (max-width: 992px) {
+    .contacts__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+      align-items: stretch;
+    }
+
+    .contacts__left {
+      order: 1;
+    }
+
+    .contacts__map-wrapper {
+      order: 2;
+    }
+
+    .contacts-heading {
+      font-size: var(--font-size-xl);
+    }
+
+    .contacts__text {
+      font-size: var(--font-size-base);
+      max-width: 100%;
+      margin-top: var(--space-sm);
+    }
+
+    .contacts__group {
+      gap: var(--space-xs);
+      margin: var(--space-md) 0;
+    }
+
+    .contacts__link {
+      font-size: var(--font-size-base);
+    }
+
+    .contacts__address {
+      margin-bottom: var(--space-md);
+    }
+
+    .contacts__form-card {
+      padding: var(--space-md);
+    }
+
+    .contacts__form-title {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--space-md);
+    }
+
+    .contacts__map {
+      min-height: 300px;
+    }
+
+    .contacts__map__header {
+      font-size: var(--font-size-base);
+      padding: var(--space-xs);
+    }
+
+    .contacts__map-hint {
+      max-width: 240px;
+      padding: var(--space-xs) var(--space-sm);
+    }
+
+    .contacts__map-hint span {
+      font-size: var(--font-size-xs);
+    }
+
+    .contacts__map-route {
+      bottom: var(--space-md);
+      left: var(--space-xs);
+      height: 38px;
+      padding: 0 var(--space-sm);
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  /* ===== Мобильные (до 768px) ===== */
+  @media (max-width: 768px) {
+    .contacts__grid {
+      gap: var(--space-lg);
+    }
+
+    .contacts-heading {
+      font-size: var(--font-size-lg);
+    }
+
+       .contacts__text {
+      font-size: var(--font-size-sm);
+      padding-left: var(--space-sm);
+      margin-top: var(--space-sm);
+      border-left-width: 2px;
+    }
+
+    .contacts__group {
+      gap: var(--space-xs);
+      margin: var(--space-sm) 0;
+    }
+
+    .contacts__link {
+      font-size: var(--font-size-base);
+      width: 100%;
+    }
+
+    .contacts__link:hover {
+      color: var(--color-text-primary);
+    }
+
+    .contacts__address {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-sm);
+    }
+
+    .contacts__socials {
+      gap: var(--space-xs);
+      flex-wrap: wrap;
+    }
+
+    .contacts__social {
+      height: 38px;
+      padding: 0 var(--space-sm);
+      font-size: var(--font-size-xs);
+      flex: 1;
+      min-width: 100px;
+      justify-content: center;
+    }
+
+    .contacts__social svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .contacts__social:hover {
+      transform: none;
+    }
+
+    .contacts__form-card {
+      padding: var(--space-sm);
+      border-radius: var(--radius-sm);
+    }
+
+    .contacts__form-title {
+      font-size: var(--font-size-base);
+      margin-bottom: var(--space-sm);
+    }
+
+    .contacts__form {
+      gap: var(--space-sm);
+    }
+
+    .contacts__input {
+      padding: var(--space-xs) var(--space-sm);
+      font-size: var(--font-size-sm);
+      min-height: var(--touch-target-min);
+    }
+
+    .contacts__field label {
+      left: var(--space-sm);
+      font-size: var(--font-size-sm);
+    }
+
+    .contacts__textarea {
+      min-height: 100px;
+      padding-top: var(--space-xs);
+    }
+
+    .contacts__textarea + label {
+      top: var(--space-xs);
+    }
+
+    .contacts__input:focus + label,
+    .contacts__input:not(:placeholder-shown) + label {
+      top: -8px;
+      font-size: 11px;
+      padding: 0 4px;
+    }
+
+    .contacts__submit {
+      padding: var(--space-xs) var(--space-md);
+      font-size: var(--font-size-sm);
+      min-height: var(--touch-target-min);
+    }
+
+    .contacts__submit:hover {
+      transform: none;
+    }
+
+    .contacts__status {
+      font-size: var(--font-size-sm);
+    }
+
+    .contacts__map-wrapper {
+      height: auto;
+    }
+
+    .contacts__map__header {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-xs);
+      padding: 0;
+    }
+
+    .contacts__map {
+      min-height: 250px;
+      border-radius: var(--radius-sm);
+    }
+
+    .contacts__map-overlay {
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .contacts__map:hover .contacts__map-overlay {
+      opacity: 1;
+    }
+
+    .contacts__map-hint {
+      max-width: 200px;
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-sm);
+    }
+
+    .contacts__map-hint svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .contacts__map-hint span {
+      font-size: 11px;
+    }
+
+    .contacts__map-route {
+      bottom: var(--space-sm);
+      left: var(--space-xs);
+      height: 34px;
+      padding: 0 var(--space-sm);
+      font-size: 11px;
+      border-radius: var(--radius-sm);
+    }
+
+    .contacts__map-route:hover {
+      border-color: var(--color-divider);
+      color: var(--color-text-primary);
+    }
+
+    .field-error,
+    .field-hint {
+      font-size: var(--font-size-xs);
+      margin-top: 2px;
+      padding: 3px 6px;
+    }
+
+    .field-hint small {
+      font-size: 10px;
+      padding-left: 16px;
+    }
+  }
+
+  /* ===== Маленькие телефоны (до 480px) ===== */
+  @media (max-width: 480px) {
+    .contacts__grid {
+      gap: var(--space-md);
+    }
+
+    .contacts-heading {
+      font-size: var(--font-size-base);
+    }
+
+    .contacts__text {
+      font-size: var(--font-size-xs);
+      padding-left: var(--space-xs);
+    }
+
+    .contacts__link {
+      font-size: var(--font-size-sm);
+    }
+
+    .contacts__address {
+      font-size: var(--font-size-xs);
+    }
+
+    .contacts__socials {
+      gap: 4px;
+    }
+
+    .contacts__social {
+      height: 34px;
+      padding: 0 var(--space-xs);
+      font-size: var(--font-size-xs);
+      min-width: 80px;
+      gap: 4px;
+    }
+
+    .contacts__social svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .contacts__form-card {
+      padding: var(--space-xs);
+    }
+
+    .contacts__form-title {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-xs);
+    }
+
+    .contacts__form {
+      gap: var(--space-xs);
+    }
+
+    .contacts__input {
+      font-size: var(--font-size-sm);
+      padding: 6px var(--space-xs);
+      min-height: 38px;
+    }
+
+    .contacts__field label {
+      font-size: var(--font-size-xs);
+      left: var(--space-xs);
+    }
+
+    .contacts__textarea {
+      min-height: 80px;
+    }
+
+    .contacts__input:focus + label,
+    .contacts__input:not(:placeholder-shown) + label {
+      top: -6px;
+      font-size: 10px;
+      padding: 0 4px;
+    }
+
+    .contacts__submit {
+      font-size: var(--font-size-sm);
+      padding: 6px var(--space-sm);
+      min-height: 38px;
+    }
+
+    .contacts__status {
+      font-size: var(--font-size-xs);
+    }
+
+    .contacts__map {
+      min-height: 200px;
+    }
+
+    .contacts__map__header {
+      font-size: var(--font-size-xs);
+    }
+
+    .contacts__map-hint {
+      max-width: 160px;
+      padding: 4px var(--space-xs);
+    }
+
+    .contacts__map-hint span {
+      font-size: 10px;
+    }
+
+    .contacts__map-route {
+      height: 30px;
+      padding: 0 var(--space-xs);
+      font-size: 10px;
+      bottom: var(--space-xs);
+    }
+
+    .field-hint {
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .field-hint span {
+      flex-wrap: wrap;
+    }
+  }
+
+  /* ===== Очень узкие экраны (до 360px) ===== */
+  @media (max-width: 360px) {
+    .contacts-heading {
+      font-size: var(--font-size-sm);
+    }
+
+     .contacts__text {
+      font-size: var(--font-size-xs);
+      padding-left: 4px;
+    }
+
+    .contacts__link {
+      font-size: var(--font-size-xs);
+    }
+
+    .contacts__socials {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .contacts__social {
+      width: 100%;
+      min-width: 0;
+      justify-content: center;
+    }
+
+    .contacts__form-card {
+      padding: 4px;
+    }
+
+    .contacts__input {
+      font-size: var(--font-size-xs);
+      min-height: 34px;
+    }
+
+    .contacts__submit {
+      font-size: var(--font-size-xs);
+      min-height: 34px;
+    }
+
+    .contacts__map {
+      min-height: 180px;
+    }
+
+    .contacts__map-hint {
+      max-width: 140px;
+    }
+
+    .contacts__map-hint span {
+      font-size: 9px;
+    }
+
+    .contacts__map-route {
+      font-size: 9px;
+      height: 28px;
+    }
+  }
+
+  /* ==========================================================================
+     ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ
+     ========================================================================== */
+
+  /* Адаптация для сетки на планшетах в альбомной ориентации */
+  @media (min-width: 769px) and (max-width: 992px) and (orientation: landscape) {
+    .contacts__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+
+    .contacts__left {
+      order: 1;
+    }
+
+    .contacts__map-wrapper {
+      order: 2;
+    }
+
+    .contacts__map {
+      min-height: 350px;
+    }
+  }
+
+  /* Отключение hover на touch-устройствах */
+  @media (hover: none) {
+    .contacts__link:hover {
+      color: var(--color-text-primary);
+    }
+
+    .contacts__social:hover {
+      transform: none;
+      border-color: var(--color-divider);
+      color: var(--color-text-primary);
+    }
+
+    .contacts__submit:hover {
+      transform: none;
+    }
+
+    .contacts__map-route:hover {
+      border-color: var(--color-divider);
+      color: var(--color-text-primary);
+    }
+
+    .contacts__map:hover .contacts__map-overlay {
+      opacity: 1;
+    }
+  }
+
+  /* Улучшение доступности для полей формы */
+  @media (max-width: 768px) {
+    .contacts__field label {
+      background: var(--color-bg-primary);
+    }
+  }
+</style>
+
+<script define:vars={{ serviceId, templateId, publicKey }}>
+  async function initContactForm() {
+    if (typeof emailjs === 'undefined') {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+      await new Promise((resolve) => { script.onload = resolve; document.head.appendChild(script); });
+    }
+
+    emailjs.init({ publicKey });
+
+    const form = document.getElementById('contactForm');
+    if (!form) return;
+
+    const submitBtn = document.getElementById('formSubmit');
+    const statusEl = document.getElementById('formStatus');
+
+    function showStatus(text, type = '') {
+      statusEl.textContent = text;
+      statusEl.className = type ? `contacts__status is-${type}` : 'contacts__status';
+    }
+
+    // ── УДАЛЕНА СТАРАЯ ВАЛИДАЦИЯ ──
+    // Теперь валидация в validation.js
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Если validation.js нашёл ошибки — классы is-error уже расставлены
+      const hasErrors = form.querySelectorAll('.is-error').length > 0;
+      if (hasErrors) {
+        showStatus('Пожалуйста, исправьте ошибки в форме.', 'error');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Отправляем...';
+      showStatus('');
+      try {
+        await emailjs.sendForm(serviceId, templateId, form);
+        if (typeof gtag !== 'undefined') gtag('event', 'contact_form_submit', { event_category: 'form' });
+        if (typeof ym !== 'undefined') ym(110113534, 'reachGoal', 'contact_form_submit');
+
+        showStatus('Заявка отправлена! Свяжемся с вами в ближайшее время.', 'success');
+        form.reset();
+        // Очищаем классы и ошибки
+        form.querySelectorAll('.is-error, .is-valid').forEach(el => el.classList.remove('is-error', 'is-valid'));
+        form.querySelectorAll('.field-error, .field-hint').forEach(el => el.remove());
+      } catch (err) {
+        console.error('EmailJS error:', err);
+        showStatus('Ошибка отправки. Напишите напрямую на imc@imc.by', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Отправить';
+      }
+    });
+
+    // Ленивая загрузка карты
+    const iframe = document.querySelector('.js-lazy-iframe');
+    if (iframe) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            iframe.src = iframe.dataset.src;
+            observer.disconnect();
+          }
+        });
+      }, { rootMargin: '200px' });
+      observer.observe(iframe);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initContactForm);
+  } else {
+    initContactForm();
+  }
+</script>

@@ -1,0 +1,555 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+
+const breadcrumbItems = [
+  {label: "Главная", href: "/"},
+  {label: "О нас", href: "/o-nas/"},
+];
+
+const stats = [
+  { number: '25+', label: 'более 25 лет на рынке Беларуси' },
+  { number: 'B2B', label: 'работаем с бизнесом' },
+];
+---
+<Layout title="О компании site2u.by — веб-направление IMC COMPUTERS"
+        description="site2u.by — веб-направление IMC COMPUTERS, 2001 год основания, 25+ года на рынке Беларуси, B2B-фокус">
+  <Breadcrumbs items={breadcrumbItems} />
+
+  <div class="about-page page--padded">
+    <div class="container">
+    <div class="about-page__heading">
+      <h1 class="page-heading">Создаём веб‑сайты для бизнеса с понятными условиями и прозрачным процессом</h1>
+      <span class="accent-rule"></span>
+    </div>
+
+    <div class="about-page__stats">
+      {stats.map((stat) => (
+          <div class="stat-block card">
+            <span class="stat-block__number">{stat.number}</span>
+            <span class="stat-block__label">{stat.label}</span>
+          </div>
+      ))}
+    </div>
+
+    <div class="about-page__grid">
+      <div class="about-page__text">
+        <p class="about-page__lead">
+          SITE2U — веб-направление компании
+          <a href="https://www.imc.by" target="_blank" rel="noopener" class="about-page__link">IMC COMPUTERS</a>.
+          Мы создаём лендинги, сайты-визитки, каталоги и веб‑сайты услуг для малого и среднего бизнеса:
+          клиник, студий, кафе, салонов, сервисных компаний и агентств.
+        </p>
+        <p class="about-page__copy">
+          Каждый проект начинается с обсуждения задач бизнеса. Вместе определяем объём работ, согласовываем этапы разработки и подключаем только те решения, которые действительно нужны вашему сайту.
+        </p>
+        <p class="about-page__copy">
+          Наш фокус — веб‑сайт, который помогает представить бизнес в интернете понятно и профессионально, рассказать о компании, услугах и способах связи с клиентами.
+        </p>
+      </div>
+
+      <aside class="about-page__principles card" aria-labelledby="principles-heading">
+        <h2 class="block-heading" id="principles-heading">Как строим работу</h2>
+        <ul class="about-page__list">
+          <li class="about-page__item">Сначала обсуждаем задачи, объём работ и этапы разработки.</li>
+          <li class="about-page__item">После каждого этапа показываем результат и согласуем правки.</li>
+          <li class="about-page__item">Если готового дизайна нет, поможем разработать его до начала создания веб‑сайта</li>
+          <li class="about-page__item">После запуска остаёмся на связи и помогаем, если возникают вопросы по работе веб‑сайта</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="about-page__cta">
+      <a href="/kontakty/" class="about-page__btn">Связаться с нами</a>
+      <a href="/uslugi/" class="about-page__secondary">Смотреть услуги →</a>
+    </div>
+
+  </div>
+  </div>
+</Layout>
+
+<style>
+
+  .about-page__heading {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .about-page__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-2xl);
+  }
+
+  @media (max-width: 768px) {
+    .about-page__stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .about-page__grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-2xl);
+    margin-bottom: var(--space-2xl);
+    align-items: flex-start;
+  }
+
+  @media (max-width: 768px) {
+    .about-page__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .about-page__lead {
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--space-md);
+  }
+
+  .about-page__copy {
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--space-md);
+  }
+
+  .about-page__principles {
+    padding: var(--space-lg);
+  }
+
+  .about-page__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+  }
+
+  .about-page__item {
+    padding-left: var(--space-md);
+    position: relative;
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .about-page__item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-circle);
+    background: var(--color-accent);
+  }
+
+  .about-page__cta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+
+  .about-page__btn {
+    display: inline-block;
+    background: var(--color-accent);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    padding: var(--space-sm) var(--space-xl);
+    border-radius: var(--radius-full);
+    transition: background var(--transition-base), transform var(--transition-base);
+  }
+
+  .about-page__btn:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  .about-page__secondary {
+    color: var(--color-accent-hover);
+    font-weight: var(--font-weight-semibold);
+    transition: var(--transition-color);
+  }
+
+  .about-page__secondary:hover {
+    color: var(--color-text-primary);
+  }
+  /* ==========================================================================
+   АДАПТИВНАЯ ВЕРСТКА: about-page
+   ========================================================================== */
+
+  /* ===== Планшеты (до 992px) ===== */
+  @media (max-width: 992px) {
+    .about-page__heading {
+      margin-bottom: var(--space-xl);
+    }
+
+    .about-page__heading .page-heading {
+      font-size: var(--font-size-xl);
+    }
+
+    .about-page__stats {
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .about-page__grid {
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+      grid-template-columns: 1fr;
+    }
+
+    .about-page__lead {
+      font-size: var(--font-size-base);
+      margin-bottom: var(--space-sm);
+    }
+
+    .about-page__copy {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-sm);
+    }
+
+    .about-page__principles {
+      padding: var(--space-md);
+    }
+
+    .about-page__principles .block-heading {
+      font-size: var(--font-size-base);
+    }
+
+    .about-page__list {
+      gap: var(--space-xs);
+      margin-top: var(--space-sm);
+    }
+
+    .about-page__item {
+      font-size: var(--font-size-sm);
+      padding-left: var(--space-sm);
+    }
+
+    .about-page__item::before {
+      width: 5px;
+      height: 5px;
+      top: 0.6em;
+    }
+
+    .about-page__cta {
+      gap: var(--space-md);
+    }
+
+    .about-page__btn {
+      padding: var(--space-sm) var(--space-lg);
+      font-size: var(--font-size-base);
+    }
+
+    .about-page__secondary {
+      font-size: var(--font-size-base);
+    }
+  }
+
+  /* ===== Мобильные (до 768px) ===== */
+  @media (max-width: 768px) {
+    .about-page__heading {
+      margin-bottom: var(--space-lg);
+    }
+
+    .about-page__heading .page-heading {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--space-xs);
+    }
+
+    .about-page__stats {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-xs);
+      margin-bottom: var(--space-lg);
+    }
+
+    .about-page__stats .stat-block {
+      padding: var(--space-sm);
+      min-width: 0;
+    }
+
+    .about-page__stats .stat-block:hover {
+      transform: none;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    }
+
+    .about-page__stats .stat-block__number {
+      font-size: var(--font-size-xl);
+    }
+
+    .about-page__stats .stat-block__label {
+      font-size: var(--font-size-sm);
+    }
+
+    .about-page__grid {
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      grid-template-columns: 1fr;
+    }
+
+    .about-page__lead {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-sm);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .about-page__copy {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-sm);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .about-page__principles {
+      padding: var(--space-sm);
+      border-radius: var(--radius-sm);
+    }
+
+    .about-page__principles:hover {
+      transform: none;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    }
+
+    .about-page__principles .block-heading {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-xs);
+    }
+
+    .about-page__list {
+      gap: var(--space-xs);
+      margin-top: var(--space-xs);
+    }
+
+    .about-page__item {
+      font-size: var(--font-size-sm);
+      padding-left: var(--space-sm);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .about-page__item::before {
+      width: 4px;
+      height: 4px;
+      top: 0.65em;
+    }
+
+    .about-page__cta {
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-sm);
+      width: 100%;
+    }
+
+    .about-page__btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 280px;
+      padding: var(--space-xs) var(--space-lg);
+      font-size: var(--font-size-sm);
+      min-height: var(--touch-target-min);
+    }
+
+    .about-page__btn:hover {
+      transform: none;
+    }
+
+    .about-page__secondary {
+      font-size: var(--font-size-sm);
+      min-height: var(--touch-target-min);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-xs) 0;
+    }
+
+    .about-page__secondary:hover {
+      color: var(--color-accent-hover);
+    }
+  }
+
+  /* ===== Маленькие телефоны (до 480px) ===== */
+  @media (max-width: 480px) {
+    .about-page__heading {
+      margin-bottom: var(--space-md);
+    }
+
+    .about-page__heading .page-heading {
+      font-size: var(--font-size-base);
+    }
+
+    .about-page__stats {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      margin-bottom: var(--space-md);
+    }
+
+    .about-page__stats .stat-block {
+      padding: var(--space-xs);
+    }
+
+    .about-page__stats .stat-block__number {
+      font-size: var(--font-size-lg);
+    }
+
+    .about-page__stats .stat-block__label {
+      font-size: var(--font-size-xs);
+    }
+
+    .about-page__lead {
+      font-size: var(--font-size-sm);
+    }
+
+    .about-page__copy {
+      font-size: var(--font-size-xs);
+    }
+
+    .about-page__principles {
+      padding: var(--space-xs);
+    }
+
+    .about-page__principles .block-heading {
+      font-size: var(--font-size-sm);
+    }
+
+    .about-page__item {
+      font-size: var(--font-size-xs);
+      padding-left: var(--space-xs);
+    }
+
+    .about-page__item::before {
+      width: 3px;
+      height: 3px;
+      top: 0.6em;
+    }
+
+    .about-page__btn {
+      font-size: var(--font-size-sm);
+      padding: var(--space-xs) var(--space-md);
+      max-width: 100%;
+      min-height: var(--touch-target-min);
+    }
+
+    .about-page__secondary {
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  /* ===== Очень узкие экраны (до 360px) ===== */
+  @media (max-width: 360px) {
+    .about-page__heading .page-heading {
+      font-size: var(--font-size-sm);
+    }
+
+     .about-page__stats {
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+
+    .about-page__stats .stat-block {
+      padding: 6px;
+    }
+
+    .about-page__stats .stat-block__number {
+      font-size: var(--font-size-base);
+    }
+
+    .about-page__stats .stat-block__label {
+      font-size: 11px;
+    }
+
+    .about-page__lead {
+      font-size: var(--font-size-xs);
+    }
+
+    .about-page__copy {
+      font-size: var(--font-size-xs);
+    }
+
+    .about-page__principles {
+      padding: 6px;
+    }
+
+    .about-page__principles .block-heading {
+      font-size: var(--font-size-xs);
+    }
+
+    .about-page__item {
+      font-size: var(--font-size-xs);
+      padding-left: 4px;
+    }
+
+    .about-page__item::before {
+      width: 3px;
+      height: 3px;
+    }
+
+    .about-page__btn {
+      font-size: var(--font-size-xs);
+      min-height: 36px;
+      padding: 6px var(--space-sm);
+    }
+
+    .about-page__secondary {
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  /* ==========================================================================
+     ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ
+     ========================================================================== */
+
+  /* Адаптация для stat-block в 4 колонки на больших экранах */
+  @media (min-width: 993px) {
+    .about-page__stats {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-md);
+    }
+  }
+
+  /* Адаптация для сетки на планшетах в альбомной ориентации */
+  @media (min-width: 769px) and (max-width: 992px) and (orientation: landscape) {
+    .about-page__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+
+    .about-page__stats {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Отключение hover на touch-устройствах */
+  @media (hover: none) {
+    .about-page__stats .stat-block:hover {
+      transform: none !important;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07) !important;
+    }
+
+    .about-page__principles:hover {
+      transform: none !important;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07) !important;
+    }
+
+    .about-page__btn:hover {
+      transform: none !important;
+    }
+
+    .about-page__secondary:hover {
+      color: var(--color-accent-hover) !important;
+    }
+  }
+
+  /* Улучшение читаемости ссылки в тексте */
+  @media (max-width: 768px) {
+    .about-page__link {
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .about-page__link {
+      font-size: var(--font-size-xs);
+    }
+  }
+
+</style>

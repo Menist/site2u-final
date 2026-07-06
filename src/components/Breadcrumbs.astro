@@ -1,0 +1,144 @@
+---
+interface Props {
+  items: { label: string; href: string }[]
+}
+const {items} = Astro.props;
+const breadcrumbItems  = items.map((el, i) => {
+  return {
+    '@type': "ListItem",
+    'position': i + 1,
+    'name': el.label,
+    'item': new URL(el.href, Astro.site)
+  }
+})
+const breadcrumbSchema={
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": breadcrumbItems
+}
+---
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)}/>
+
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <ol class="breadcrumbs__list">
+      {items.map((el, index) => (
+          <li>
+            {index === items.length - 1
+              ? <span aria-current="page">{el.label}</span>
+              : <a href={el.href}>{el.label}</a>}
+          </li>
+      ))}
+    </ol>
+  </nav>
+</div>
+
+<style>
+  .breadcrumbs__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    list-style: none;
+    padding-left: 0;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+  }
+
+  .breadcrumbs__list a {
+    color: var(--color-text-secondary);
+    transition: var(--transition-color);
+  }
+
+  .breadcrumbs__list a:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .breadcrumbs__list li:not(:last-child)::after {
+    content: '→';
+    margin-left: var(--space-xs);
+    color: var(--color-divider);
+  }
+
+  /* ==========================================================================
+   АДАПТИВНАЯ ВЕРСТКА: breadcrumbs
+   ========================================================================== */
+
+  /* ===== Планшеты (до 768px) ===== */
+  @media (max-width: 768px) {
+    .breadcrumbs__list {
+      gap: 6px;
+      font-size: var(--font-size-xs);
+      margin-top: var(--space-md);
+      margin-bottom: var(--space-xs);
+    }
+
+    .breadcrumbs__list li:not(:last-child)::after {
+      margin-left: 6px;
+    }
+  }
+
+  /* ===== Мобильные (до 576px) ===== */
+  @media (max-width: 576px) {
+    .breadcrumbs__list {
+      gap: 4px;
+      font-size: 12px;
+      margin-top: var(--space-sm);
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .breadcrumbs__list a,
+    .breadcrumbs__list span {
+      padding: 2px 0;
+      white-space: nowrap;
+    }
+
+    .breadcrumbs__list li:not(:last-child)::after {
+      margin-left: 4px;
+      margin-right: 0;
+    }
+
+    /* Ограничиваем количество видимых крошек на мобильных */
+    .breadcrumbs__list li:nth-child(n+4):not(:last-child) {
+      display: none;
+    }
+
+    /* Показываем ... перед последним элементом */
+    .breadcrumbs__list li:nth-child(3):not(:last-child)::after {
+      content: '... →';
+      margin-left: 4px;
+    }
+
+    /* Скрываем стрелку у скрытых элементов */
+    .breadcrumbs__list li:nth-child(n+4):not(:last-child)::after {
+      content: '';
+      display: none;
+    }
+  }
+
+  /* ===== Очень узкие экраны (до 400px) ===== */
+  @media (max-width: 400px) {
+    .breadcrumbs__list {
+      font-size: 11px;
+      gap: 3px;
+      margin-top: var(--space-xs);
+      margin-bottom: 4px;
+    }
+
+    .breadcrumbs__list li:not(:last-child)::after {
+      margin-left: 3px;
+    }
+
+    /* На очень узких показываем только первый и последний */
+    .breadcrumbs__list li:nth-child(n+2):not(:last-child) {
+      display: none;
+    }
+
+    .breadcrumbs__list li:first-child:not(:last-child)::after {
+      content: '... →';
+      margin-left: 3px;
+    }
+  }
+</style>

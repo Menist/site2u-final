@@ -1,0 +1,129 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   WORD SPLIT
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+
+.word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(115%);
+  transition:
+      opacity  0.85s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--i, 0) * 0.07s);
+}
+
+.is-visible .word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   УНИВЕРСАЛЬНЫЙ REVEAL — все секции
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Убираем анимацию с внутренних элементов */
+.services,
+.about-teaser,
+.advantages,
+.process {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+  transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.services.is-visible,
+.about-teaser.is-visible,
+.advantages.is-visible,
+.process.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Для grid-элементов убираем анимацию (она теперь на уровне секции) */
+.services__grid,
+.about-teaser__grid,
+.advantages__grid,
+.process__grid {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+/* Небольшая задержка для stage конфигуратора */
+.configurator.is-visible .configurator__stage {
+  transition-delay: 0.2s;
+}
+/* Добавьте анимацию для самих секций */
+.configurator,
+.cta {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+  transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.configurator.is-visible,
+.cta.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Уберите анимацию с внутренних элементов (или сделайте их сразу видимыми) */
+.configurator__header,
+.configurator__stage,
+.cta__inner {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   REDUCED MOTION
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  body.js-ready .hero__nav-link,
+  body.js-ready .hero__logo,
+  body.js-ready .hero__subtitle,
+  body.js-ready .hero__cta,
+  body.js-ready .hero__arrow,
+  .word,
+  .services__grid,
+  .about-teaser__grid,
+  .advantages__grid,
+  .process__grid,
+  .configurator__header,
+  .configurator__stage,
+  .cta__inner {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+
+  html { scroll-behavior: auto; }
+}

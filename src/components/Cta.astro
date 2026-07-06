@@ -1,0 +1,124 @@
+---
+---
+<section class="cta section--padded">
+  <div class="container cta__inner">
+    <h2 class="cta__title">Готовы обсудить проект?</h2>
+    <p class="cta__subtitle">Расскажите о задаче — обсудим проект, ответим на вопросы и предложим оптимальный формат веб‑сайта.</p>
+    <a href="/kontakty/" class="cta__btn" data-track="cta_button">Обсудить проект</a>
+  </div>
+</section>
+
+<style>
+  .cta {
+    background: var(--color-bg-secondary);
+  }
+
+  .cta__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-md);
+  }
+
+  .cta__title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    max-width: var(--container-sm);
+  }
+
+  .cta__subtitle {
+    color: var(--color-text-secondary);
+    max-width: 480px;
+    line-height: var(--line-height-relaxed);
+  }
+
+  .cta__btn {
+    display: inline-block;
+    background: var(--color-accent);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    padding: var(--space-sm) var(--space-xl);
+    border-radius: var(--radius-full);
+    transition: var(--transition-bg), transform var(--transition-base);
+  }
+
+  .cta__btn:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  /* ==========================================================================
+   АДАПТИВНАЯ ВЕРСТКА: cta
+   ========================================================================== */
+
+  /* ===== Планшеты (до 768px) ===== */
+  @media (max-width: 768px) {
+    .cta__inner {
+      gap: var(--space-sm);
+    }
+
+    .cta__title {
+      font-size: var(--font-size-xl);
+      max-width: 100%;
+    }
+
+    .cta__subtitle {
+      font-size: var(--font-size-base);
+      max-width: 100%;
+      padding: 0 var(--space-sm);
+    }
+
+    .cta__btn {
+      padding: var(--space-sm) var(--space-lg);
+      font-size: var(--font-size-base);
+      min-height: var(--touch-target-min);
+    }
+  }
+
+  /* ===== Мобильные (до 576px) ===== */
+  @media (max-width: 576px) {
+    .cta__inner {
+      gap: var(--space-xs);
+    }
+
+    .cta__title {
+      font-size: var(--font-size-lg);
+      margin-bottom: 0;
+    }
+
+    .cta__subtitle {
+      font-size: var(--font-size-sm);
+      padding: 0;
+      margin-bottom: var(--space-xs);
+    }
+
+    .cta__btn {
+      padding: var(--space-xs) var(--space-lg);
+      font-size: var(--font-size-sm);
+      min-height: var(--touch-target-min);
+      width: 100%;
+      max-width: 320px;
+      text-align: center;
+    }
+  }
+
+  /* ===== Очень узкие экраны (до 400px) ===== */
+  @media (max-width: 400px) {
+    .cta__title {
+      font-size: var(--font-size-md);
+    }
+
+    .cta__subtitle {
+      font-size: var(--font-size-xs);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .cta__btn {
+      padding: var(--space-xs) var(--space-md);
+      font-size: var(--font-size-xs);
+      max-width: 100%;
+      min-height: 40px;
+    }
+  }
+</style>

@@ -1,0 +1,333 @@
+---
+const process = [
+  {
+    number: '01',
+    title: 'Обсуждение',
+    items: ['Обсуждаем проект и цели бизнеса', 'Определяем структуру веб‑сайта и состав страниц', 'Договариваемся о сроках и бюджете']
+  },
+  {
+    number: '02',
+    title: 'Макет и дизайн',
+    items: ['Работаем с готовым макетом или создаём дизайн для вас', 'Все решения по дизайну согласуются до начала разработки']
+  },
+  {
+    number: '03',
+    title: 'Разработка',
+    items: ['Разрабатываем веб‑сайт и подключаем необходимые сервисы', 'При необходимости подключаем CMS, аналитику и SEO-подготовку сайта', 'Проверяем работу сайта в современных браузерах и на разных устройствах']
+  },
+  {
+    number: '04',
+    title: 'Запуск',
+    items: ['Помогаем разместить веб‑сайт на хостинге', 'Настраиваем домен и защищённое соединение (HTTPS)', 'Передаём проект и остаёмся на связи после запуска']
+  }
+];
+---
+
+<section class="process section--padded">
+  <div class="container">
+    <h2 class="section-heading">Как мы создаём веб‑сайты</h2>
+    <p class="section-heading__subtitle">Проект проходит через понятные этапы — от обсуждения идеи до запуска веб‑сайта. Каждый следующий этап начинается только после согласования предыдущего.</p>
+
+    <ol class="process__grid">
+      {process.map((step) => (
+          <li class="process__card card">
+            <span class="process__number">{step.number}</span>
+            <h3 class="process__title">{step.title}</h3>
+            <ul class="process__list">
+              {step.items.map((item) => (
+                  <li>{item}</li>
+              ))}
+            </ul>
+          </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .process{
+    background: var(--color-bg-secondary);
+  }
+  .process__grid {
+    display: grid;
+    list-style: none;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-md);
+  }
+
+  @media (max-width: 992px) {
+    .process__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 576px) {
+    .process__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .process__card {
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  .process__number {
+    display: block;
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  .process__title {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .process__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding-left: 0;
+  }
+
+  .process__list li {
+    color: var(--color-text-secondary);
+    padding-left: var(--space-sm);
+    position: relative;
+    line-height: var(--line-height-relaxed);
+  }
+
+  .process__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 5px;
+    height: 5px;
+    border-radius: var(--radius-circle);
+    background: var(--color-accent);
+  }
+
+  /* ==========================================================================
+   АДАПТИВНАЯ ВЕРСТКА: process
+   ========================================================================== */
+
+  /* ===== Планшеты (до 992px) ===== */
+  @media (max-width: 992px) {
+    .process__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-sm);
+    }
+
+    .process__card {
+      padding: var(--space-md);
+      gap: var(--space-xs);
+    }
+
+    .process__number {
+      font-size: var(--font-size-2xl);
+      line-height: 1;
+    }
+
+    .process__title {
+      font-size: var(--font-size-base);
+    }
+
+    .process__list {
+      gap: 6px;
+    }
+
+    .process__list li {
+      font-size: var(--font-size-sm);
+      padding-left: var(--space-sm);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .process__list li::before {
+      top: 0.6em;
+      width: 4px;
+      height: 4px;
+    }
+  }
+
+  /* ===== Мобильные (до 768px) ===== */
+  @media (max-width: 768px) {
+    .process__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-xs);
+    }
+
+    .process__card {
+      padding: var(--space-sm);
+      gap: 4px;
+      border-radius: var(--radius-sm);
+    }
+
+    .process__number {
+      font-size: var(--font-size-xl);
+      margin-bottom: 2px;
+    }
+
+    .process__title {
+      font-size: var(--font-size-sm);
+      margin-bottom: 2px;
+    }
+
+    .process__list {
+      gap: 4px;
+    }
+
+    .process__list li {
+      font-size: var(--font-size-xs);
+      padding-left: var(--space-sm);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .process__list li::before {
+      top: 0.6em;
+      width: 3px;
+      height: 3px;
+    }
+
+    /* Убираем hover-эффект на мобильных */
+    .process__card:hover {
+      transform: none;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    }
+  }
+
+  /* ===== Маленькие телефоны (до 576px) ===== */
+  @media (max-width: 576px) {
+    .process__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+    }
+
+    .process__card {
+      padding: var(--space-md);
+      gap: var(--space-xs);
+      border-radius: var(--radius-sm);
+    }
+
+    .process__number {
+      font-size: var(--font-size-2xl);
+    }
+
+    .process__title {
+      font-size: var(--font-size-base);
+    }
+
+    .process__list {
+      gap: 4px;
+    }
+
+    .process__list li {
+      font-size: var(--font-size-sm);
+      padding-left: var(--space-sm);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .process__list li::before {
+      top: 0.6em;
+      width: 4px;
+      height: 4px;
+    }
+  }
+
+  /* ===== Очень узкие экраны (до 360px) ===== */
+  @media (max-width: 360px) {
+    .process__card {
+      padding: var(--space-xs);
+      gap: 2px;
+    }
+
+    .process__number {
+      font-size: var(--font-size-xl);
+    }
+
+    .process__title {
+      font-size: var(--font-size-sm);
+    }
+
+    .process__list li {
+      font-size: var(--font-size-xs);
+      padding-left: var(--space-xs);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .process__list li::before {
+      top: 0.55em;
+      width: 3px;
+      height: 3px;
+    }
+  }
+
+  /* ==========================================================================
+     ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ
+     ========================================================================== */
+
+  /* Адаптация для экранов с 4-мя колонками на больших планшетах */
+  @media (min-width: 993px) and (max-width: 1200px) {
+    .process__grid {
+      gap: var(--space-sm);
+    }
+
+    .process__card {
+      padding: var(--space-md);
+    }
+
+    .process__number {
+      font-size: var(--font-size-2xl);
+    }
+
+    .process__title {
+      font-size: var(--font-size-base);
+    }
+
+    .process__list li {
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  /* Специально для 3-х колонок на промежуточных размерах */
+  @media (min-width: 769px) and (max-width: 992px) {
+    .process__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-sm);
+    }
+  }
+
+  /* Если будет 4-й этап с длинным текстом */
+  @media (max-width: 768px) {
+    .process__card:has(.process__list li:nth-child(4)) {
+      padding: var(--space-sm);
+    }
+
+    .process__card:has(.process__list li:nth-child(4)) .process__list li {
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  /* Адаптация для очень высоких экранов (мониторы) */
+  @media (min-height: 1080px) {
+    .process__card {
+      padding: var(--space-xl);
+    }
+
+    .process__number {
+      font-size: var(--font-size-3xl);
+    }
+
+    .process__title {
+      font-size: var(--font-size-lg);
+    }
+
+    .process__list li {
+      font-size: var(--font-size-base);
+      line-height: var(--line-height-relaxed);
+    }
+  }
+</style>

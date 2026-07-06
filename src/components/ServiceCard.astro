@@ -1,0 +1,456 @@
+---
+interface Props {
+  title: string;
+  forText: string;
+  items: string[];
+  term: string;
+  btnText: string;
+  btnHref: string;
+  primary?: boolean;
+}
+
+const { title, forText, items, term, btnText, btnHref, primary = false } = Astro.props;
+---
+<article class={primary ? 'service-card service-card--primary' : 'service-card'}>
+  <div class="service-card__icon" aria-hidden="true">
+    <slot name="icon" />
+  </div>
+
+  <div class="service-card__body">
+    <h3 class="service-card__title">{title}</h3>
+    <p class="service-card__for">
+      <span class="service-card__label">Подойдет, если нужно</span> {forText}</p>
+  </div>
+
+  <ul class="service-card__list">
+    {items.map((item) => (
+        <li>{item}</li>
+    ))}
+  </ul>
+
+  <div class="service-card__footer">
+    <p class="service-card__term">{term}</p>
+    <a href={btnHref} class="service-card__btn" data-track={`service_${btnHref.split('/').pop()}`}>{btnText}</a>
+  </div>
+
+  <p class="service-card__design-note">
+    Работаем по готовому макету или поможем создать дизайн с нуля
+  </p>
+</article>
+
+<style>
+  .service-card {
+    width: 50%;
+    text-align: center;
+    padding: 40px 30px;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-bg-primary);
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow 0.4s ease, transform var(--transition-base);
+  }
+  .service-card:hover {
+    box-shadow: rgba(0, 0, 0, 0.14) 0 24px 64px;
+    transform: translateY(-4px);
+  }
+  .service-card--primary {
+    border: 1px solid var(--color-accent);
+  }
+  .service-card__icon {
+    color: var(--color-accent);
+  }
+
+  .service-card__title {
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-normal);
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-md);
+    color: var(--color-text-primary);
+  }
+
+  .service-card__label {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .service-card__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  .service-card__list li::before {
+    content: "✓";
+    position: static;
+    margin-right: 6px;
+    left: 0;
+    color: var(--color-accent);
+    font-weight: var(--font-weight-bold);
+  }
+  .service-card__for{
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-light);
+    color: var(--color-text-secondary);
+    margin-top: calc(var(--space-sm) * -0.5);
+    margin-bottom: var(--space-lg);
+  }
+
+  .service-card__list li {
+    padding-left: var(--space-sm);
+    position: relative;
+    color: var(--color-text-secondary);
+  }
+
+  .service-card__term {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid var(--color-divider);
+  }
+
+  .service-card__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: var(--space-lg);
+    padding: 13px 30px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    transition: var(--transition-bg), var(--transition-color), var(--transition-transform);
+    background-color: var(--color-accent);
+    border: 2px solid var(--color-accent);
+    color: var(--color-text-primary);
+  }
+
+  .service-card__btn:hover {
+    transform: translateY(-2px);
+
+    background-color: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+    color: var(--color-text-primary);
+    transform: translateY(-2px);
+  }
+
+  .service-card__design-note {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-light);
+    color: var(--color-text-secondary);
+    margin-top: var(--space-sm);
+    text-align: center;
+  }
+  .service-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .service-card__footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-top: auto;
+    width: 100%;
+  }
+
+  /* ==========================================================================
+   АДАПТИВНАЯ ВЕРСТКА: service-card
+   ========================================================================== */
+
+  /* ===== Планшеты (до 992px) ===== */
+  @media (max-width: 992px) {
+    .service-card {
+      width: 100%;
+      padding: var(--space-lg) var(--space-md);
+    }
+
+    .service-card__title {
+      font-size: var(--font-size-md);
+      margin-top: var(--space-sm);
+      margin-bottom: var(--space-sm);
+    }
+
+    .service-card__for {
+      font-size: var(--font-size-sm);
+      margin-top: calc(var(--space-xs) * -0.5);
+      margin-bottom: var(--space-md);
+    }
+
+    .service-card__list {
+      gap: 6px;
+    }
+
+    .service-card__list li {
+      font-size: var(--font-size-sm);
+      padding-left: var(--space-sm);
+    }
+
+    .service-card__list li::before {
+      margin-right: 4px;
+    }
+
+    .service-card__term {
+      font-size: var(--font-size-sm);
+      margin-top: var(--space-md);
+      padding-top: var(--space-sm);
+    }
+
+    .service-card__btn {
+      padding: 11px 24px;
+      font-size: var(--font-size-xs);
+      min-height: var(--touch-target-min);
+    }
+
+    .service-card__design-note {
+      font-size: var(--font-size-sm);
+      margin-top: var(--space-xs);
+    }
+
+    .service-card__body {
+      gap: 4px;
+    }
+
+    .service-card__footer {
+      gap: var(--space-xs);
+    }
+  }
+
+  /* ===== Мобильные (до 768px) ===== */
+  @media (max-width: 768px) {
+    .service-card {
+      width: 100%;
+      padding: var(--space-md);
+      border-radius: var(--radius-sm);
+    }
+
+    .service-card:hover {
+      transform: none;
+      box-shadow: var(--shadow-card);
+    }
+
+    .service-card--primary:hover {
+      box-shadow: var(--shadow-card);
+    }
+
+    .service-card__icon {
+      font-size: var(--font-size-xl);
+    }
+
+    .service-card__title {
+      font-size: var(--font-size-base);
+      margin-top: var(--space-xs);
+      margin-bottom: var(--space-xs);
+    }
+
+    .service-card__for {
+      font-size: var(--font-size-sm);
+      margin-top: 0;
+      margin-bottom: var(--space-sm);
+    }
+
+    .service-card__list {
+      gap: 4px;
+      width: 100%;
+      text-align: left;
+      padding-left: 0;
+    }
+
+    .service-card__list li {
+      font-size: var(--font-size-sm);
+      padding-left: var(--space-sm);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .service-card__list li::before {
+      margin-right: 6px;
+    }
+
+    .service-card__term {
+      font-size: var(--font-size-sm);
+      margin-top: var(--space-sm);
+      padding-top: var(--space-xs);
+    }
+
+    .service-card__btn {
+      padding: 10px 20px;
+      font-size: var(--font-size-xs);
+      min-height: var(--touch-target-min);
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .service-card__design-note {
+      font-size: var(--font-size-xs);
+      margin-top: var(--space-xs);
+    }
+
+    .service-card__footer {
+      gap: 6px;
+    }
+  }
+
+  /* ===== Маленькие телефоны (до 480px) ===== */
+  @media (max-width: 480px) {
+    .service-card {
+      padding: var(--space-sm);
+      border-radius: var(--radius-sm);
+    }
+
+    .service-card__title {
+      font-size: var(--font-size-base);
+      margin-top: var(--space-xs);
+      margin-bottom: 4px;
+    }
+
+    .service-card__for {
+      font-size: var(--font-size-xs);
+      margin-bottom: var(--space-sm);
+    }
+
+    .service-card__list {
+      gap: 3px;
+    }
+
+    .service-card__list li {
+      font-size: var(--font-size-xs);
+      padding-left: var(--space-sm);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .service-card__list li::before {
+      margin-right: 4px;
+    }
+
+    .service-card__term {
+      font-size: var(--font-size-xs);
+      margin-top: var(--space-sm);
+      padding-top: 6px;
+    }
+
+    .service-card__btn {
+      padding: 8px 16px;
+      font-size: var(--font-size-xs);
+      min-height: var(--touch-target-min);
+      max-width: 100%;
+    }
+
+    .service-card__design-note {
+      font-size: var(--font-size-xs);
+      margin-top: 4px;
+    }
+
+    .service-card__footer {
+      gap: 4px;
+    }
+  }
+
+  /* ===== Очень узкие экраны (до 360px) ===== */
+  @media (max-width: 360px) {
+    .service-card {
+      padding: var(--space-xs);
+    }
+
+    .service-card__title {
+      font-size: var(--font-size-sm);
+    }
+
+    .service-card__for {
+      font-size: var(--font-size-xs);
+    }
+
+    .service-card__list li {
+      font-size: 12px;
+      padding-left: var(--space-xs);
+    }
+
+    .service-card__list li::before {
+      margin-right: 3px;
+    }
+
+    .service-card__term {
+      font-size: 12px;
+    }
+
+    .service-card__btn {
+      font-size: 11px;
+      padding: 6px 12px;
+      min-height: 36px;
+    }
+
+    .service-card__design-note {
+      font-size: 11px;
+    }
+  }
+
+  /* ==========================================================================
+     ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ
+     ========================================================================== */
+
+  /* Если карточки используются в сетке из 2-х колонок на десктопе */
+  @media (min-width: 993px) {
+    .service-card {
+      width: 50%;
+      /* Карточка занимает половину контейнера */
+    }
+
+    /* Для четных карточек можно добавить отступ справа */
+    .service-card:not(:last-child) {
+      margin-right: var(--space-md);
+    }
+  }
+
+  /* Если карточки в ряд на планшетах */
+  @media (min-width: 769px) and (max-width: 992px) {
+    .service-card {
+      width: calc(50% - var(--space-sm) / 2);
+      margin-right: var(--space-sm);
+    }
+
+    .service-card:nth-child(2n) {
+      margin-right: 0;
+    }
+  }
+
+  /* Адаптация для контейнера с карточками (если используется flex) */
+  .service-card-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+
+  @media (max-width: 768px) {
+    .service-card-wrapper {
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .service-card-wrapper .service-card {
+      width: 100%;
+      margin-right: 0;
+    }
+  }
+
+  /* Адаптация для длинных заголовков */
+  @media (max-width: 768px) {
+    .service-card__title:has(+ .service-card__for) {
+      word-break: break-word;
+      hyphens: auto;
+    }
+  }
+
+  /* Улучшение читаемости на мобильных */
+  @media (max-width: 480px) {
+    .service-card__body {
+      width: 100%;
+    }
+
+    .service-card__list {
+      text-align: left;
+      padding-left: 0;
+    }
+  }
+</style>
