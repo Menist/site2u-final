@@ -1,9 +1,11 @@
 ---
 const navItems = [
   { label: "Главная", href: "/" },
-  { label: "Корпоративные веб‑сайты", href: "/uslugi/corporate-site/" },
-  { label: "Лендинги", href: "/uslugi/landing/" },
+  { label: "Корпоративные веб‑сайты", href: "/uslugi/korporativnyj-sajt/" },
+  { label: "Лендинги", href: "/uslugi/lending/" },
   { label: "Контакты", href: "/kontakty/" },
+  { label: "Блог", href: "/blog/" },
+  { label: "F.A.Q.", href: "/faq/" },
 ];
 const currentYear = new Date().getFullYear();
 ---
@@ -13,7 +15,7 @@ const currentYear = new Date().getFullYear();
     <div class="footer__grid">
       <div class="footer__brand">
         <span class="footer__logo">SITE2U</span>
-        <p class="footer__desc">Веб-направление компании IMC COMPUTERS. Создаём веб‑сайты для бизнеса в Беларуси.</p>
+        <p class="footer__desc">Веб-направление компании IMC COMPUTERS. Создаём сайты для бизнеса в Беларуси.</p>
       </div>
 
       <nav class="footer__nav" aria-label="Навигация в подвале сайта">
@@ -29,7 +31,7 @@ const currentYear = new Date().getFullYear();
         <p class="footer__nav-title">Контакты</p>
         <address>
           <ul class="footer__contacts-list">
-            <li><a href="tel:+375296195265" class="footer__contact-link">+375 (29) 619-52-65</a></li>
+            <li><a href="tel:+375293195265" class="footer__contact-link">+375 (29) 319-52-65</a></li>
             <li><a href="mailto:imc@imc.by" class="footer__contact-link">imc@imc.by</a></li>
             <li class="footer__address">Минск, проспект Независимости, 68-2, офис 108</li>
           </ul>
@@ -47,7 +49,7 @@ const currentYear = new Date().getFullYear();
 
 <style>
   .footer {
-    background: var(--color-bg-primary);
+    background: var(--color-bg-secondary);
     border-top: 1px solid var(--color-divider);
     padding-top: var(--space-sm);
   }

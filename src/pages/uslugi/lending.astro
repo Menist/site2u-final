@@ -1,0 +1,742 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Faq from '../../components/Faq.astro';
+
+interface Props {
+  trackSuffix?: string;
+}
+
+const {trackSuffix = 'lending'} = Astro.props;
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Разработка лендинга",
+  "name": "Разработка лендинга на заказ",
+  "description": "Разработка адаптивного лендинга с формой заявки, оптимизацией скорости загрузки и настройкой целей для отслеживания заявок",
+  "provider": {
+    "@type": "Organization",
+    "name": "site2u.by"
+  },
+  "areaServed": "BY"
+}
+const breadcrumbItems = [
+  {label: "Главная", href: "/"},
+  {label: "Услуги", href: "/uslugi/"},
+  {label: "Лендинг", href: "/uslugi/lending/"}
+];
+
+const faqItems = [
+  {
+    question: 'Нужна ли CMS для лендинга?',
+    answer: 'В большинстве случаев — нет. Лендинг обычно содержит информацию, которая меняется редко, поэтому подключение CMS может быть избыточным. Если в дальнейшем появится необходимость самостоятельно обновлять контент, CMS можно добавить уже после запуска лендинга.',
+    relatedLink: {
+      href: '/blog/nuzhna-li-cms-dlya-sajta/',
+      text: 'Нужна ли CMS для сайта и когда можно обойтись без неё'
+    }
+  },
+  {
+    question: 'Нужен ли мне домен заранее?',
+    answer: 'Нет. Поможем подобрать домен, зарегистрировать его и разместить сайт на хостинге.'
+  },
+  {
+    question: 'Кто готовит тексты для сайта?',
+    answer: 'Обычно тексты предоставляет клиент, поскольку лучше знает особенности своего бизнеса. При необходимости поможем составить структуру страниц, подскажем, какие материалы подготовить, и при необходимости поможем с их доработкой.'
+  },
+  {
+    question: 'Можно ли потом добавить страницы к лендингу?',
+    answer: 'Да. При необходимости лендинг можно расширить до полноценного многостраничного сайта без необходимости создавать проект заново.'
+  },
+  {
+    question: 'Нужно ли SEO для лендинга?',
+    answer: 'Не всегда. Если лендинг создаётся для рекламы, дополнительная SEO-подготовка может не понадобиться. Если же вы хотите получать посетителей из поисковых систем, подготовим сайт к дальнейшему SEO-продвижению.'
+  }
+];
+---
+<Layout title="Разработка лендингов для бизнеса в Беларуси | SITE2U"
+        description="Разрабатываем лендинги для бизнеса в Беларуси. Адаптивный дизайн, форма заявки, подключение аналитики и SEO-подготовка — по согласованию."
+        serviceSchema={serviceSchema}>
+  <Breadcrumbs items={breadcrumbItems}/>
+
+  <div class="service-detail page--padded">
+    <div class="container">
+      <div class="service-detail__heading-block">
+        <h1 class="page-heading">Разработка лендинга на заказ</h1>
+        <span class="accent-rule"></span>
+      </div>
+
+      <p class="service-detail__lead">
+        Разрабатываем лендинги для запуска рекламных кампаний, продвижения отдельных услуг, акций и мероприятий.
+        Одностраничный сайт помогает сосредоточить внимание посетителя на главном действии — оставить заявку, связаться
+        с вами или узнать подробнее о предложении.
+      </p>
+
+      <section class="service-features">
+        <h2 class="block-heading">Что вы получаете</h2>
+        <ul class="service-features__grid">
+          <li class="feature-item card">
+            <svg class="feature-item__icon" aria-hidden="true" viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+            </svg>
+            <p>Сайт корректно отображается на компьютерах, планшетах и смартфонах</p>
+          </li>
+          <li class="feature-item card">
+            <svg class="feature-item__icon" aria-hidden="true" viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+            </svg>
+            <p>Быстрая загрузка страниц для удобства посетителей</p>
+          </li>
+          <li class="feature-item card">
+            <svg class="feature-item__icon" aria-hidden="true" viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+            </svg>
+            <p>Форма заявки или кнопка для быстрого перехода в мессенджер</p>
+          </li>
+          <li class="feature-item card">
+            <svg class="feature-item__icon" aria-hidden="true" viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+            </svg>
+            <p>Подключаем аналитику для отслеживания заявок и других действий посетителей.</p>
+          </li>
+        </ul>
+        <p class="service-detail__text block--accent-border">
+          Лендинг подходит не каждому бизнесу. Если вы не уверены, какой формат сайта выбрать, поможем разобраться и
+          предложим решение под ваши задачи.
+        </p>
+      </section>
+
+      <section class="service-design">
+        <h2 class="block-heading">Работа с дизайном</h2>
+        <div class="service-design__grid">
+          <div class="design-option card">
+            <h3>Если у вас уже есть макет</h3>
+            <p>Разработаем сайт по готовому макету и согласуем только важные детали</p>
+          </div>
+          <div class="design-option card">
+            <h3>Если макета нет</h3>
+            <p>Разработаем дизайн, согласуем его с вами и после утверждения приступим к разработке сайта</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="service-detail__block">
+        <h2 class="block-heading">SEO — по согласованию</h2>
+        <p>Для большинства рекламных лендингов SEO не требуется, поскольку основной поток посетителей приходит из
+          контекстной или таргетированной рекламы. Если же лендинг должен привлекать клиентов из Google и Яндекса,
+          подготовим сайт к дальнейшему SEO-продвижению.</p>
+      </section>
+
+      <section class="service-stats">
+        <div class="stat-block card">
+          <span class="stat-block__number">5–10</span>
+          <span class="stat-block__label">дней на разработку</span>
+        </div>
+        <div class="stat-block card ">
+          <span class="stat-block__number">100%</span>
+          <span class="stat-block__label">оплата по факту готовой работы</span>
+        </div>
+      </section>
+
+      <section class="service-detail__block">
+        <h2 class="block-heading">После запуска</h2>
+        <p>После запуска остаёмся на связи, отвечаем на вопросы и при необходимости помогаем с развитием и доработкой
+          сайта</p>
+      </section>
+      <Faq items={faqItems}/>
+
+      <section class="service-detail__block service-detail__block--cta">
+        <h2 class="block-heading">Готовы обсудить проект?</h2>
+        <p>Расскажите о своей задаче — ответим на вопросы, предложим подходящее решение и поможем выбрать оптимальный
+          формат веб-сайта.</p>
+        <a href="/kontakty/" class="service-detail__btn" data-track={`cta_button_${trackSuffix}`}>Обсудить проект</a>
+      </section>
+
+
+    </div>
+  </div>
+</Layout>
+
+<style>
+
+  .service-detail__lead {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    max-width: var(--container-sm);
+    margin-bottom: var(--space-lg);
+  }
+
+  .service-detail__text {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    max-width: var(--container-sm);
+    margin: var(--space-lg) 0;
+    padding-left: var(--space-sm);
+  }
+
+  .service-detail__block {
+    max-width: var(--container-sm);
+
+  }
+
+  .service-detail__block p {
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .service-features {
+    margin-bottom: var(--space-xl);
+  }
+
+  .service-features__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .service-detail__btn {
+    display: inline-block;
+    margin-top: var(--space-xs);
+    background: var(--color-accent);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    padding: var(--space-sm) var(--space-xl);
+    border-radius: var(--radius-full);
+    transition: var(--transition-bg), transform var(--transition-base);
+  }
+
+  .service-detail__btn:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 992px) {
+
+    .service-detail__block--cta p {
+      font-size: var(--font-size-sm);
+      max-width: 100%;
+    }
+
+    .service-detail__btn {
+      padding: var(--space-sm) var(--space-lg);
+      font-size: var(--font-size-base);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .service-features__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    border-radius: var(--radius-sm);
+    padding: var(--space-md);
+  }
+
+  .feature-item__icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    color: var(--color-accent-hover);
+  }
+
+  .feature-item p {
+    margin: 0;
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+  }
+
+  .service-design {
+    margin-bottom: var(--space-xl);
+  }
+
+  .service-design__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+  }
+
+
+  @media (max-width: 768px) {
+    .service-design__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .service-detail__block--cta {
+      padding: var(--space-md) var(--space-sm);
+      margin: var(--space-md) 0;
+      border-radius: var(--radius-sm);
+    }
+
+    .service-detail__block--cta .block-heading {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--space-xs);
+    }
+
+    .service-detail__block--cta p {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-sm);
+      padding: 0 var(--space-xs);
+    }
+
+    .service-detail__btn {
+      display: block;
+      width: 100%;
+      margin: 0 auto;
+      padding: var(--space-sm) var(--space-md);
+      font-size: var(--font-size-base);
+      text-align: center;
+    }
+
+    .service-detail__btn:hover {
+      transform: translateY(-1px);
+    }
+  }
+
+  .design-option {
+    border-radius: var(--radius-sm);
+    padding: var(--space-md);
+  }
+
+  .design-option h3 {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-xs);
+  }
+
+  .design-option p {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-base);
+  }
+
+  .service-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  /* ==========================================================================
+   АДАПТИВНАЯ ВЕРСТКА: service-detail (лендинг)
+   ========================================================================== */
+
+  /* ===== Планшеты (до 992px) ===== */
+  @media (max-width: 992px) {
+    .service-detail__lead {
+      font-size: var(--font-size-base);
+      max-width: 100%;
+      margin-bottom: var(--space-md);
+    }
+
+    .service-features__grid {
+      gap: var(--space-sm);
+    }
+
+    .feature-item {
+      padding: var(--space-sm);
+      gap: var(--space-xs);
+    }
+
+    .feature-item p {
+      font-size: var(--font-size-sm);
+    }
+
+    .service-design__grid {
+      gap: var(--space-sm);
+    }
+
+    .design-option {
+      padding: var(--space-sm);
+    }
+
+    .design-option h3 {
+      font-size: var(--font-size-sm);
+    }
+
+    .design-option p {
+      font-size: var(--font-size-sm);
+    }
+
+    .service-detail__text {
+      font-size: var(--font-size-base);
+      max-width: 100%;
+      margin: var(--space-md) 0;
+    }
+
+    .service-stats {
+      gap: var(--space-sm);
+    }
+
+    .service-stats .stat-block {
+      flex: 1;
+      min-width: 140px;
+    }
+  }
+
+  /* ===== Мобильные (до 768px) ===== */
+  @media (max-width: 768px) {
+    .service-detail__heading-block {
+      margin-bottom: var(--space-sm);
+    }
+
+    .service-detail__lead {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-md);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .service-features {
+      margin-bottom: var(--space-lg);
+    }
+
+    .service-features__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-xs);
+    }
+
+    .feature-item {
+      padding: var(--space-sm);
+      gap: var(--space-xs);
+      border-radius: var(--radius-sm);
+    }
+
+    .feature-item p {
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .feature-item__icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .service-detail__text {
+      font-size: var(--font-size-sm);
+      padding-left: var(--space-md);
+      margin: var(--space-md) 0;
+    }
+
+    .service-design {
+      margin-bottom: var(--space-lg);
+    }
+
+    .service-design__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-xs);
+    }
+
+    .design-option {
+      padding: var(--space-sm);
+      border-radius: var(--radius-sm);
+    }
+
+    .design-option h3 {
+      font-size: var(--font-size-sm);
+      margin-bottom: 4px;
+    }
+
+    .design-option p {
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .service-detail__block {
+      margin-bottom: var(--space-md);
+    }
+
+    .service-detail__block h2 {
+      font-size: var(--font-size-base);
+    }
+
+    .service-detail__block p {
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .service-stats {
+      flex-direction: column;
+      gap: var(--space-xs);
+      margin-bottom: var(--space-lg);
+    }
+
+    .service-stats .stat-block {
+      width: 100%;
+      padding: var(--space-sm);
+      min-width: 0;
+    }
+
+    .service-stats .stat-block__number {
+      font-size: var(--font-size-xl);
+    }
+
+    .service-stats .stat-block__label {
+      font-size: var(--font-size-sm);
+    }
+
+    /* Отключаем hover на мобильных */
+    .feature-item:hover,
+    .design-option:hover {
+      transform: none;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    }
+
+    .service-stats .stat-block:hover {
+      transform: none;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    }
+  }
+
+  /* ===== Маленькие телефоны (до 480px) ===== */
+  @media (max-width: 480px) {
+
+    .service-detail__lead {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-sm);
+    }
+
+    .feature-item {
+      padding: var(--space-xs);
+      gap: 4px;
+    }
+
+    .feature-item p {
+      font-size: var(--font-size-xs);
+    }
+
+    .feature-item__icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .service-detail__text {
+      font-size: var(--font-size-xs);
+      padding-left: var(--space-sm);
+      margin: var(--space-sm) 0;
+    }
+
+    .design-option {
+      padding: var(--space-xs);
+    }
+
+    .design-option h3 {
+      font-size: var(--font-size-xs);
+    }
+
+    .design-option p {
+      font-size: var(--font-size-xs);
+    }
+
+    .service-detail__block h2 {
+      font-size: var(--font-size-sm);
+    }
+
+    .service-detail__block p {
+      font-size: var(--font-size-xs);
+    }
+
+    .service-stats .stat-block {
+      padding: var(--space-xs);
+    }
+
+    .service-stats .stat-block__number {
+      font-size: var(--font-size-lg);
+    }
+
+    .service-stats .stat-block__label {
+      font-size: var(--font-size-xs);
+    }
+
+    /* Акцентная граница на мобильных */
+    .block--accent-border {
+      border-left-width: 2px;
+      padding-left: var(--space-sm);
+    }
+
+    .service-detail__block--cta {
+      padding: var(--space-sm);
+      margin: var(--space-sm) 0;
+    }
+
+    .service-detail__block--cta .block-heading {
+      font-size: var(--font-size-base);
+    }
+
+    .service-detail__block--cta p {
+      font-size: var(--font-size-xs);
+      padding: 0;
+    }
+
+    .service-detail__btn {
+      padding: 10px var(--space-md);
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  /* ===== Очень узкие экраны (до 360px) ===== */
+  @media (max-width: 360px) {
+    .service-detail__lead {
+      font-size: var(--font-size-xs);
+    }
+
+    .feature-item {
+      padding: 6px;
+    }
+
+    .feature-item p {
+      font-size: var(--font-size-xs);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .feature-item__icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .service-detail__text {
+      font-size: var(--font-size-xs);
+      padding-left: var(--space-xs);
+    }
+
+    .design-option {
+      padding: 6px;
+    }
+
+    .design-option h3 {
+      font-size: var(--font-size-xs);
+    }
+
+    .design-option p {
+      font-size: var(--font-size-xs);
+    }
+
+    .service-detail__block h2 {
+      font-size: var(--font-size-xs);
+    }
+
+    .service-detail__block p {
+      font-size: var(--font-size-xs);
+    }
+
+    .service-stats .stat-block {
+      padding: 6px;
+    }
+
+    .service-stats .stat-block__number {
+      font-size: var(--font-size-base);
+    }
+
+    .service-stats .stat-block__label {
+      font-size: 11px;
+    }
+
+    .block--accent-border {
+      padding-left: 6px;
+    }
+
+    .service-detail__block--cta {
+      padding: var(--space-xs);
+    }
+
+    .service-detail__block--cta .block-heading {
+      font-size: var(--font-size-sm);
+    }
+
+    .service-detail__block--cta p {
+      font-size: var(--font-size-xs);
+    }
+
+    .service-detail__btn {
+      padding: 8px var(--space-sm);
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  /* ==========================================================================
+     ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ
+     ========================================================================== */
+
+  /* Адаптация для сетки фич на больших планшетах */
+  @media (min-width: 769px) and (max-width: 992px) {
+    .service-features__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-sm);
+    }
+
+    .feature-item {
+      padding: var(--space-md);
+    }
+  }
+
+  /* Адаптация для длинных текстов в фичах */
+  @media (max-width: 768px) {
+    .feature-item p {
+      word-break: break-word;
+      hyphens: auto;
+    }
+  }
+
+  /* Адаптация для stat-block в ряд на планшетах */
+  @media (min-width: 769px) and (max-width: 992px) {
+    .service-stats {
+      flex-direction: row;
+      gap: var(--space-sm);
+    }
+
+    .service-stats .stat-block {
+      flex: 1;
+      min-width: 120px;
+    }
+  }
+
+  /* Улучшение читаемости на мобильных */
+  @media (max-width: 768px) {
+    .service-detail__heading-block .page-heading {
+      font-size: var(--font-size-xl);
+      margin-bottom: var(--space-xs);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .service-detail__heading-block .page-heading {
+      font-size: var(--font-size-lg);
+    }
+  }
+
+  @media (max-width: 360px) {
+    .service-detail__heading-block .page-heading {
+      font-size: var(--font-size-base);
+    }
+  }
+
+  /* Отключение hover на touch-устройствах */
+  @media (hover: none) {
+    .feature-item:hover,
+    .design-option:hover,
+    .service-stats .stat-block:hover {
+      transform: none !important;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07) !important;
+    }
+  }
+
+  @media (hover: none) {
+    .service-detail__btn:hover {
+      transform: none !important;
+      background: var(--color-accent) !important;
+    }
+  }
+
+
+</style>

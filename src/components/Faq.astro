@@ -1,6 +1,6 @@
 ---
 interface Props {
-  items: { question: string; answer: string }[];
+  items: { question: string; answer: string; relatedLink?: { href: string; text: string } }[];
 }
 
 const { items } = Astro.props;
@@ -15,6 +15,11 @@ const { items } = Astro.props;
           <div class="faq__item" data-faq-item aria-hidden={index === 0 ? 'false' : 'true'} class:list={['faq__item', { 'is-active': index === 0 }]}>
             <h3 class="faq__question">{item.question}</h3>
             <p class="faq__answer">{item.answer}</p>
+            {item.relatedLink && (
+                <a href={item.relatedLink.href} class="faq-page__link">
+                  Подробнее: {item.relatedLink.text} →
+                </a>
+            )}
           </div>
       ))}
     </div>
@@ -26,6 +31,7 @@ const { items } = Astro.props;
     </div>
   </div>
 </section>
+
 <script>
   let currentIndex = 0;
   let isTransitioning = false;
@@ -36,39 +42,40 @@ const { items } = Astro.props;
   const nextBtn = document.querySelector<HTMLButtonElement>('[data-faq-next]');
   const total = itemEls.length;
 
-  if (!counterEl || !prevBtn || !nextBtn || !total) {
-    // Элементы не найдены на странице — дальше делать нечего
-  } else {
+  if (counterEl && prevBtn && nextBtn && total > 0) {
     function render(direction: number, previousIndex: number) {
       isTransitioning = true;
 
       const prevEl = itemEls[previousIndex];
       const nextEl = itemEls[currentIndex];
 
-      prevEl.style.transform = `translateX(${direction * -30}px)`;
-      prevEl.classList.remove('is-active');
-      prevEl.setAttribute('aria-hidden', 'true');
+      if (prevEl) {
+        prevEl.style.transform = `translateX(${direction * -30}px)`;
+        prevEl.classList.remove('is-active');
+        prevEl.setAttribute('aria-hidden', 'true');
+      }
 
-      nextEl.style.transform = `translateX(${direction * 30}px)`;
+      if (nextEl) {
+        nextEl.style.transform = `translateX(${direction * 30}px)`;
 
-      requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          nextEl.classList.add('is-active');
-          nextEl.setAttribute('aria-hidden', 'false');
-          nextEl.style.transform = 'translateX(0)';
-          counterEl!.textContent = `${currentIndex + 1} / ${total}`;
+          requestAnimationFrame(() => {
+            nextEl.classList.add('is-active');
+            nextEl.setAttribute('aria-hidden', 'false');
+            nextEl.style.transform = 'translateX(0)';
+            counterEl!.textContent = `${currentIndex + 1} / ${total}`;
+          });
         });
-      });
+      }
 
       setTimeout(() => {
-        prevEl.style.transform = '';
+        if (prevEl) {
+          prevEl.style.transform = '';
+        }
         isTransitioning = false;
       }, 300);
     }
 
-    // Единственное место, где навешаны обработчики клика — без дублирования.
-    // Проверка isTransitioning стоит ДО мутации currentIndex, чтобы быстрый повторный
-    // клик во время анимации не мог рассинхронизировать состояние.
     nextBtn.addEventListener('click', () => {
       if (isTransitioning) return;
       const previousIndex = currentIndex;
@@ -87,6 +94,7 @@ const { items } = Astro.props;
 <style>
   .faq {
     max-width: var(--container-sm);
+    margin: var(--space-xl) 0;
   }
   .faq__content {
     position: relative;
@@ -98,6 +106,18 @@ const { items } = Astro.props;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .faq-page__link {
+    display: inline-block;
+    color: var(--color-accent-hover);
+    font-weight: var(--font-weight-semibold);
+    transition: var(--transition-color);
+    margin-top: var(--space-xs);
+    margin-bottom: var(--space-md);
+  }
+
+  .faq-page__link:hover {
+    color: var(--color-text-primary);
   }
 
   .faq__item.is-active {
@@ -124,7 +144,6 @@ const { items } = Astro.props;
   .faq__answer {
     color: var(--color-text-secondary);
     line-height: var(--line-height-relaxed);
-    margin-bottom: var(--space-md);
     transition: color 0.3s ease;
   }
 

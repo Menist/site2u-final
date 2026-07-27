@@ -1,10 +1,15 @@
 ---
+interface Props {
+  trackSuffix?: string;
+}
+
+const { trackSuffix = 'home' } = Astro.props;
 ---
 <section class="cta section--padded">
   <div class="container cta__inner">
     <h2 class="cta__title">Готовы обсудить проект?</h2>
-    <p class="cta__subtitle">Расскажите о задаче — обсудим проект, ответим на вопросы и предложим оптимальный формат веб‑сайта.</p>
-    <a href="/kontakty/" class="cta__btn" data-track="cta_button">Обсудить проект</a>
+    <p class="cta__subtitle">Расскажите о своей задаче — ответим на вопросы, предложим подходящее решение и поможем выбрать оптимальный формат веб-сайта.</p>
+    <a href="/kontakty/" class="cta__btn" data-track={`cta_button_${trackSuffix}`}>Обсудить проект</a>
   </div>
 </section>
 

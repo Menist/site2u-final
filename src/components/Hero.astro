@@ -36,11 +36,11 @@ import HeroTitle from '../../src/components/HeroTitle.astro';
   <div class="hero__container">
     <div class="container hero__content">
       <!-- Используем компонент с серверным разбиением слов -->
-      <HeroTitle text="Веб‑сайты для бизнеса в Беларуси" />
+      <HeroTitle text="Создание сайтов для бизнеса в Беларуси" />
 
       <p class="hero__subtitle">
-        Разрабатываем веб‑сайты услуг, лендинги, сайты-визитки, промо-страницы и каталоги.
-        Если у вас уже есть макет — реализуем его. Если нет — поможем с дизайном и подготовим проект с нуля.
+        Создаём сайты для бизнеса: сайты услуг, сайты-визитки, лендинги и промо-страницы.
+        Если у вас уже есть готовый макет — разработаем сайт по нему. Если макета нет — поможем с дизайном и подготовим проект с нуля.
       </p>
 
       <a href="/kontakty/" class="hero__cta" data-track="hero_cta">
@@ -209,12 +209,8 @@ import HeroTitle from '../../src/components/HeroTitle.astro';
 
   /* ===== Планшеты (до 992px) ===== */
   @media (max-width: 992px) {
-    .hero {
-      min-height: 90vh;
-    }
 
     .hero__container {
-      min-height: 90vh;
       padding: 0 var(--space-md);
     }
 
@@ -247,7 +243,7 @@ import HeroTitle from '../../src/components/HeroTitle.astro';
   @media (max-width: 768px) {
     .hero {
       min-height: 100vh;
-      min-height: 100dvh; /* Для мобильных браузеров с динамической панелью */
+      min-height: 100dvh;
     }
 
     .hero__container {

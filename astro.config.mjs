@@ -5,4 +5,7 @@ export default defineConfig({
   site: 'https://site2u.by',
   trailingSlash: 'always',
   integrations: [sitemap()],
+  build: {
+    inlineStylesheets: 'always'
+  }
 });

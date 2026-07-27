@@ -42,6 +42,8 @@ body {
 .services,
 .about-teaser,
 .advantages,
+.not-doing,
+.our-approach,
 .process {
   opacity: 0;
   transform: translateY(35px);
@@ -52,6 +54,8 @@ body {
 .services.is-visible,
 .about-teaser.is-visible,
 .advantages.is-visible,
+.not-doing.is-visible,
+.our-approach.is-visible,
 .process.is-visible {
   opacity: 1;
   transform: translateY(0);

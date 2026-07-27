@@ -1,0 +1,276 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+
+
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post: CollectionEntry<'blog'>) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, heroImageAlt } = post.data;
+const { Content } = await render(post);
+
+const breadcrumbItems = [
+  { label: "Главная", href: "/" },
+  { label: "Блог", href: "/blog/" },
+  { label: title, href: `/blog/${post.id}/` },
+];
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+const allPosts = await getCollection('blog');
+const relatedPosts = (post.data.relatedPosts ?? [])
+  .map(id => allPosts.find(p => p.id === id))
+  .filter((p): p is CollectionEntry<'blog'> => p !== undefined);
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": title,
+  "description": description,
+  "mainEntityOfPage": new URL(`/blog/${post.id}/`, Astro.site).toString(),
+  ...(heroImage && { "image": new URL(heroImage.src, Astro.site).toString() }),
+  "datePublished": pubDate.toISOString(),
+  ...(updatedDate && { "dateModified": updatedDate.toISOString() }),
+  "author": {
+    "@type": "Organization",
+    "name": "site2u.by"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "site2u.by",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://site2u.by/android-chrome-512x512.png"
+    }
+  }
+};
+---
+<Layout title={`${title} | Блог site2u.by`}
+        description={description}
+        serviceSchema={articleSchema}>
+  <Breadcrumbs items={breadcrumbItems} />
+
+  <article class="blog-post page--padded">
+    <div class="container blog-post__container">
+      <header class="blog-post__header">
+        <time class="blog-post__date" datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+        <h1 class="page-heading">{title}</h1>
+      </header>
+
+      {heroImage && (
+          <Image
+              src={heroImage}
+              alt={heroImageAlt || ''}
+              class="blog-post__hero"
+              loading="eager"
+              decoding="async"
+          />
+      )}
+
+      <div class="article-body">
+        <Content />
+        {relatedPosts.length > 0 && (
+            <section class="related-posts" aria-label="Похожие статьи">
+              <h2 class="related-posts__title">Читайте также</h2>
+              <ul class="related-posts__list">
+                {relatedPosts.map((related) => (
+                    <li class="related-posts__item card">
+                      <a href={`/blog/${related.id}/`} class="related-posts__link">
+                        <div class="related-posts__image-wrap">
+                          {related.data.heroImage ? (
+                              <Image
+                                  src={related.data.heroImage}
+                                  alt={related.data.heroImageAlt || ''}
+                                  width={360}
+                                  height={216}
+                                  class="related-posts__image"
+                              />
+                          ) : (
+                              <div class="related-posts__image-fallback" aria-hidden="true"></div>
+                          )}
+                        </div>
+                        <div class="related-posts__body">
+                          <span class="related-posts__post-title">{related.data.title}</span>
+                          <span class="related-posts__more">Читать →</span>
+                        </div>
+                      </a>
+                    </li>
+                ))}
+              </ul>
+            </section>
+        )}
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .blog-post__container {
+    max-width: var(--container-sm);
+  }
+
+  .blog-post__header {
+    margin-bottom: var(--space-lg);
+  }
+
+  .blog-post__date {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-xs);
+  }
+
+  .blog-post__hero {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-xl);
+  }
+  .related-posts {
+    margin-top: var(--space-lg);
+    border-top: 1px solid var(--color-divider);
+  }
+
+  .related-posts__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-md);
+  }
+
+  .related-posts__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .related-posts__item {
+    list-style: none;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .related-posts__item::marker {
+    content: none;
+  }
+
+  .related-posts__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .related-posts__image-wrap {
+    aspect-ratio: 5 / 3;
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+  }
+
+  .related-posts__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-base);
+  }
+
+  .related-posts__item:hover .related-posts__image {
+    transform: scale(1.04);
+  }
+
+  .related-posts__image-fallback {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-divider));
+  }
+
+  .related-posts__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: var(--space-md);
+    flex: 1;
+  }
+
+  .related-posts__post-title {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-normal);
+  }
+
+  .related-posts__more {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-accent-hover);
+    margin-top: auto;
+  }
+
+  @media (max-width: 768px) {
+    .related-posts__list {
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+    }
+
+    .related-posts__item:hover {
+      transform: none;
+      box-shadow: var(--shadow-card);
+    }
+
+    .related-posts__item:hover .related-posts__image {
+      transform: none;
+    }
+
+    .related-posts__body {
+      padding: var(--space-sm);
+    }
+  }
+
+  @media (hover: none) {
+    .related-posts__item:hover {
+      transform: none !important;
+      box-shadow: var(--shadow-card) !important;
+    }
+
+    .related-posts__item:hover .related-posts__image {
+      transform: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .related-posts__image {
+      transition: none;
+    }
+  }
+  @media (max-width: 768px) {
+    .blog-post__header .page-heading {
+      font-size: var(--font-size-xl);
+    }
+
+    .blog-post__hero {
+      margin-bottom: var(--space-lg);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .blog-post__header .page-heading {
+      font-size: var(--font-size-lg);
+    }
+  }
+</style>

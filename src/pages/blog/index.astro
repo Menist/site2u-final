@@ -1,0 +1,239 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { Image } from 'astro:assets';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+const breadcrumbItems = [
+  { label: "Главная", href: "/" },
+  { label: "Блог", href: "/blog/" },
+];
+
+const allPosts = await getCollection('blog');
+const posts = allPosts.sort(
+  (a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) =>
+    b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+---
+<Layout title="Блог — статьи о разработке сайтов | site2u.by"
+        description="Статьи о создании сайтов для бизнеса: выбор формата, подготовка к запуску, продвижение и полезные советы.">
+  <Breadcrumbs items={breadcrumbItems} />
+
+  <div class="blog-page page--padded">
+    <div class="container">
+      <div class="blog-page__heading">
+        <h1 class="page-heading">Блог</h1>
+        <span class="accent-rule"></span>
+      </div>
+
+      <p class="blog-page__lead">
+        Статьи о разработке сайтов для бизнеса — что важно учитывать перед запуском, как выбрать формат и на что обращать внимание при работе с подрядчиком.
+      </p>
+
+      {posts.length > 0 ? (
+          <ul class="blog-page__list">
+            {posts.map((post: CollectionEntry<'blog'>) => (
+                <li class="blog-card card">
+                  <a href={`/blog/${post.id}/`} class="blog-card__link">
+                    <div class="blog-card__image-wrap">
+                      {post.data.heroImage ? (
+                          <Image
+                              src={post.data.heroImage}
+                              alt={post.data.heroImageAlt || ''}
+                              width={480}
+                              height={288}
+                              class="blog-card__image"
+                          />
+                      ) : (
+                          <div class="blog-card__image-fallback" aria-hidden="true"></div>
+                      )}
+                    </div>
+                    <div class="blog-card__body">
+                      <span class="blog-card__date">{formatDate(post.data.pubDate)}</span>
+                      <h2 class="blog-card__title">{post.data.title}</h2>
+                      <p class="blog-card__desc">{post.data.description}</p>
+                      <span class="blog-card__more">Читать статью →</span>
+                    </div>
+                  </a>
+                </li>
+            ))}
+          </ul>
+      ) : (
+          <p class="blog-page__empty">Пока нет опубликованных статей — загляните позже.</p>
+      )}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .blog-page__heading {
+    margin-bottom: var(--space-md);
+  }
+
+  .blog-page__lead {
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    max-width: var(--container-sm);
+    margin-bottom: var(--space-xl);
+  }
+
+  .blog-page__empty {
+    color: var(--color-text-secondary);
+  }
+
+  .blog-page__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .blog-card {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .blog-card__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .blog-card__image-wrap {
+    aspect-ratio: 5 / 3;
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+  }
+
+  .blog-card__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-base);
+  }
+
+  .blog-card:hover .blog-card__image {
+    transform: scale(1.04);
+  }
+
+  /* Заглушка для статей без обложки — просто акцентный градиент,
+     чтобы сетка карточек не теряла ритм */
+  .blog-card__image-fallback {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-divider));
+  }
+
+  .blog-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: var(--space-lg);
+    flex: 1;
+  }
+
+  .blog-card__date {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+  }
+
+  .blog-card__title {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-normal);
+  }
+
+  .blog-card__desc {
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    flex: 1;
+  }
+
+  .blog-card__more {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-accent-hover);
+    margin-top: var(--space-sm);
+  }
+
+  /* ==========================================================================
+     АДАПТИВНАЯ ВЕРСТКА: blog-page
+     ========================================================================== */
+
+  @media (max-width: 992px) {
+    .blog-page__list {
+      gap: var(--space-sm);
+    }
+
+    .blog-card__body {
+      padding: var(--space-md);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .blog-page__heading .page-heading {
+      font-size: var(--font-size-xl);
+    }
+
+    .blog-page__lead {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-page__list {
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+    }
+
+    .blog-card:hover {
+      transform: none;
+      box-shadow: var(--shadow-card);
+    }
+
+    .blog-card:hover .blog-card__image {
+      transform: none;
+    }
+
+    .blog-card__title {
+      font-size: var(--font-size-base);
+    }
+
+    .blog-card__desc {
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .blog-page__heading .page-heading {
+      font-size: var(--font-size-lg);
+    }
+
+    .blog-card__body {
+      padding: var(--space-sm);
+    }
+  }
+
+  @media (hover: none) {
+    .blog-card:hover {
+      transform: none !important;
+      box-shadow: var(--shadow-card) !important;
+    }
+
+    .blog-card:hover .blog-card__image {
+      transform: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blog-card__image {
+      transition: none;
+    }
+  }
+</style>

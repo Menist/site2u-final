@@ -4,21 +4,23 @@ const stats = [
   { number: 'B2B', label: 'работаем с бизнесом' }
 ];
 const aboutList = [
-  { text: 'Офис — Минск' },
-  { text: 'Акцент — B2B-проекты' },
-  { text: 'Специализация — веб‑сайты услуг, лендинги, сайты-визитки, промо-страницы и каталоги' }
+  {text: 'Офис — Минск, работаем по всей Беларуси'},
+  {text: 'Специализация — корпоративные веб-сайты, лендинги и сайты-визитки'},
+  {text: 'Основной фокус — проекты для малого и среднего бизнеса (B2B)'}
 ];
 ---
 <section class="about-teaser section--padded">
   <div class="container">
     <h2 class="section-heading">О нас </h2>
-    <p class="section-heading__subtitle">Веб-направление <a href="https://www.imc.by" target="_blank" rel="noopener" class="about-page__link">
+    <p class="section-heading__subtitle">Веб-направление <a href="https://www.imc.by" target="_blank" rel="noopener"
+                                                            class="about-page__link">
       IMC COMPUTERS<span class="sr-only"> (откроется в новой вкладке)</span>
-    </a>— создаём веб‑сайты услуг, лендинги, сайты-визитки, промо-страницы и каталоги, подбирая решение под задачи каждого бизнеса. </p>
+    </a>— разрабатываем сайты услуг, сайты-визитки, лендинги и промо-страницы, подбирая решение под задачи
+      каждого бизнеса. </p>
     <div class="about-teaser__grid">
       <div class="about-teaser__text">
-        <h3 class="block-heading">Разрабатываем веб‑сайты для бизнеса с понятным процессом и прозрачными условиями.</h3>
-        <p class="about-teaser__title">SITE2U — веб-направление IMC COMPUTERS</p>
+        <h3 class="block-heading">Разрабатываем сайты для бизнеса в Беларуси с понятным процессом и прозрачными условиями работы.</h3>
+        <p class="about-teaser__title">SITE2U — веб-направление IMC COMPUTERS, которое занимается разработкой корпоративных веб-сайтов, лендингов и других сайтов для малого и среднего бизнеса.</p>
         <ul class="about-teaser__list">
           {aboutList.map((item) => (
               <li>{item.text}</li>
@@ -51,7 +53,6 @@ const aboutList = [
     padding-left: var(--space-sm);
     position: relative;
   }
-
   .about-teaser__list li::before {
     content: '';
     position: absolute;
@@ -188,12 +189,6 @@ const aboutList = [
 
     .section-heading {
       font-size: var(--font-size-2xl);
-    }
-
-    .section-heading__subtitle {
-      font-size: var(--font-size-base);
-      margin-bottom: var(--space-md);
-      padding: 0 5px;
     }
 
     .block-heading {

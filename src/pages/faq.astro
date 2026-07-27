@@ -1,0 +1,330 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+const breadcrumbItems = [
+  { label: "Главная", href: "/" },
+  { label: "F.A.Q.", href: "/faq/" },
+];
+
+const faqItems = [
+  {
+    question: 'Нужна ли CMS для сайта?',
+    answer: 'CMS — это система управления сайтом, которая позволяет самостоятельно изменять тексты, изображения и другой контент без редактирования кода. Однако она нужна не каждому проекту. Если сайт редко обновляется, установка CMS может быть необязательной. При разработке мы заранее обсуждаем этот вопрос, рассказываем о преимуществах и особенностях работы с CMS, после чего решение остаётся за вами.',
+    relatedLink: {
+      href: '/blog/nuzhna-li-cms-dlya-sajta/',
+      text: 'Нужна ли CMS для сайта и когда можно обойтись без неё'
+    }
+  },
+  {
+    question: 'Кто покупает домен для сайта?',
+    answer: 'Если необходимо, регистрацию домена выполняем мы и включаем её в общую стоимость разработки сайта. При этом домен сразу регистрируется на данные клиента, поэтому именно он становится его владельцем и полностью сохраняет права на доменное имя.',
+    relatedLink: {
+      href: '/blog/kto-pokupaet-domen-dlya-sajta/',
+      text: 'Кто покупает домен, кому он принадлежит и что важно знать'
+    }
+  },
+  {
+    question: 'Можно ли редактировать сайт после публикации?',
+    answer: 'Да. После публикации сайта можно изменять тексты, изображения, контактную информацию, добавлять новые страницы и вносить другие изменения. Если на сайте подключена CMS, часть изменений вы сможете выполнять самостоятельно. При необходимости систему управления можно добавить и после запуска проекта.',
+    relatedLink: {
+      href: '/blog/mozhno-li-redaktirovat-sajt-posle-publikacii/',
+      text: 'Можно ли редактировать сайт после публикации и как это происходит'
+    }
+  },
+  {
+    question: 'Нужен ли SSL-сертификат для сайта?',
+    answer:
+      'Да. SSL-сертификат обеспечивает защищённое HTTPS-соединение между сайтом и посетителем. Сегодня он необходим практически для любого современного сайта: браузеры помечают сайты без HTTPS как небезопасные, а поисковые системы учитывают использование защищённого соединения при ранжировании. При разработке сайта мы настраиваем SSL-сертификат перед публикацией.',
+    relatedLink: {
+      href: '/blog/nuzhen-li-ssl-sertifikat-dlya-sajta/',
+      text: 'Что такое SSL-сертификат и зачем он нужен сайту'
+    }
+  },
+  {
+    question: 'Можно ли перенести сайт на другой хостинг?',
+    answer: 'Да. Если возникнет необходимость сменить хостинг-провайдера, сайт можно перенести. При разработке мы не используем решения, которые искусственно привязывают клиента к конкретному хостингу. После завершения проекта сайт полностью принадлежит владельцу.',
+    relatedLink: {
+      href: '/blog/mozhno-li-perenesti-sajt-na-drugoj-hosting/',
+      text: 'Можно ли перенести сайт на другой хостинг и что для этого потребуется'
+    }
+  },
+  {
+    question: 'Будет ли сайт корректно работать на телефонах и планшетах?',
+    answer: 'Да. Все сайты, которые мы разрабатываем, сразу адаптируются под смартфоны, планшеты и компьютеры. Это базовая часть разработки, а не дополнительная услуга. Мы проверяем отображение страниц на разных размерах экранов, чтобы посетителям было удобно пользоваться сайтом независимо от устройства.',
+    relatedLink: {
+      href: '/blog/chto-takoe-adaptivnyj-sajt/',
+      text: 'Что такое адаптивный сайт и почему без него сегодня нельзя'
+    }
+  },
+  {
+    question: 'Нужен ли SSL-сертификат для сайта?',
+    answer: 'Да. Все разрабатываемые нами сайты работают по защищённому протоколу HTTPS. SSL-сертификат шифрует передаваемые данные, повышает доверие посетителей и является современным стандартом для коммерческих сайтов.',
+    relatedLink: {
+      href: '/blog/zachem-nuzhen-ssl-sertifikat/',
+      text: 'Зачем нужен SSL-сертификат и что такое HTTPS'
+    }
+  }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqItems.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+};
+---
+<Layout title="Частые вопросы — F.A.Q. | site2u.by"
+        description="Ответы на частые вопросы о разработке сайтов: стоимость, сроки, оплата, домен и хостинг, поддержка после запуска."
+        serviceSchema={faqSchema}>
+  <Breadcrumbs items={breadcrumbItems} />
+
+  <div class="faq-page page--padded">
+    <div class="container">
+      <div class="faq-page__heading">
+        <h1 class="page-heading">Частые вопросы</h1>
+        <span class="accent-rule"></span>
+      </div>
+
+      <p class="faq-page__lead">
+        Собрали ответы на вопросы, которые чаще всего задают перед началом работы. Если не нашли ответ — <a href="/kontakty/" class="faq-page__link">свяжитесь с нами</a>, ответим лично.
+      </p>
+
+      <div class="faq-page__list">
+        {faqItems.map((item) => (
+            <details class="faq-item">
+              <summary class="faq-item__question">
+                <span>{item.question}</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="faq-item__content">
+                <div class="faq-item__content-inner">
+                  <p class="faq-item__answer">{item.answer}</p>
+                  {item.relatedLink && (
+                      <a href={item.relatedLink.href} class="faq-item__related">
+                        Подробнее в блоге: {item.relatedLink.text} →
+                      </a>
+                  )}
+                </div>
+              </div>
+            </details>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .faq-page__heading {
+    margin-bottom: var(--space-md);
+  }
+
+  .faq-page__lead {
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    max-width: var(--container-sm);
+    margin-bottom: var(--space-xl);
+  }
+
+  .faq-page__link {
+    color: var(--color-accent-hover);
+    font-weight: var(--font-weight-semibold);
+    transition: var(--transition-color);
+  }
+
+  .faq-page__link:hover {
+    color: var(--color-text-primary);
+  }
+
+  .faq-page__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    max-width: var(--container-sm);
+  }
+
+  .faq-item {
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  .faq-item__question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq-item__question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item__icon {
+    position: relative;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  .faq-item__icon::before,
+  .faq-item__icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: var(--color-accent);
+    transition: transform var(--transition-base);
+  }
+
+  .faq-item__icon::before {
+    width: 14px;
+    height: 2px;
+    transform: translate(-50%, -50%);
+  }
+
+  .faq-item__icon::after {
+    width: 2px;
+    height: 14px;
+    transform: translate(-50%, -50%);
+  }
+
+  .faq-item[open] .faq-item__icon::after {
+    transform: translate(-50%, -50%) rotate(90deg) scaleY(0);
+  }
+
+  /* ── Плавное открытие/закрытие через grid-template-rows ──
+     Переопределяем встроенное браузерное display:none для контента
+     <details>, чтобы иметь возможность анимировать высоту.
+     Семантика open/closed для скринридеров не зависит от этого —
+     она берётся из самого атрибута [open], а не из вычисленного display. */
+  .faq-item__content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .faq-item[open] .faq-item__content {
+    grid-template-rows: 1fr;
+  }
+
+  .faq-item__content-inner {
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .faq-item__answer {
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--color-divider);
+  }
+
+  /* Ссылка на связанную статью блога — тот же цвет/вес, что у остальных
+     ссылок на сайте (about-page__link, faq-page__link), плюс небольшой
+     отступ и блочное позиционирование, чтобы она заметно выделялась
+     отдельной строкой под ответом. */
+  .faq-item__related {
+    display: inline-block;
+    margin-top: var(--space-sm);
+    color: var(--color-accent-hover);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+    transition: var(--transition-color);
+  }
+
+  .faq-item__related:hover {
+    color: var(--color-text-primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-item__icon::before,
+    .faq-item__icon::after {
+      transition: none;
+    }
+
+    .faq-item__content {
+      transition: none;
+    }
+  }
+
+  /* ==========================================================================
+     АДАПТИВНАЯ ВЕРСТКА: faq-page
+     ========================================================================== */
+
+  @media (max-width: 992px) {
+    .faq-page__lead {
+      font-size: var(--font-size-base);
+      margin-bottom: var(--space-lg);
+    }
+
+    .faq-item {
+      padding: var(--space-sm) var(--space-md);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .faq-page__heading .page-heading {
+      font-size: var(--font-size-xl);
+    }
+
+    .faq-page__lead {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-md);
+    }
+
+    .faq-page__list {
+      gap: var(--space-xs);
+    }
+
+    .faq-item {
+      padding: var(--space-sm);
+      border-radius: var(--radius-sm);
+    }
+
+    .faq-item__question {
+      font-size: var(--font-size-sm);
+      gap: var(--space-sm);
+    }
+
+    .faq-item__answer {
+      font-size: var(--font-size-sm);
+    }
+
+    .faq-item__related {
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .faq-page__heading .page-heading {
+      font-size: var(--font-size-lg);
+    }
+
+    .faq-item__question {
+      font-size: var(--font-size-xs);
+    }
+
+    .faq-item__answer {
+      font-size: var(--font-size-xs);
+    }
+
+    .faq-item__icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+</style>

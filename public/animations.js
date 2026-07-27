@@ -108,7 +108,9 @@
       ".about-teaser",
       ".advantages",
       ".process",
+      '.not-doing',
       ".configurator",
+      ".our-approach",
       ".cta"
     ];
 

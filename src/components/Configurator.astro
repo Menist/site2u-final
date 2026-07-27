@@ -9,7 +9,7 @@ const publicKey = import.meta.env.EMAILJS_PUBLIC_KEY;
   <div class="container">
     <header class="configurator__header">
       <h2 class="section-heading">Обсудим ваш проект</h2>
-      <p class="section-heading__subtitle">Ответьте на несколько вопросов о проекте или оставьте контакты — мы свяжемся с вами и обсудим детали.</p>
+      <p class="section-heading__subtitle">Ответьте на несколько вопросов о будущем сайте или оставьте контакты — мы свяжемся с вами и обсудим детали.</p>
     </header>
     <div class="configurator__stage">
       <!-- В шаблоне -->
@@ -223,9 +223,9 @@ const publicKey = import.meta.env.EMAILJS_PUBLIC_KEY;
           title: 'Какой веб‑сайт хотите создать?',
           multiple: false,
           options: [
-            {value: 'Лендинг', description: 'Одностраничный веб‑сайт'},
-            {value: 'Веб‑сайт услуг', description: 'Для компаний и специалистов'},
-            {value: 'Многостраничный веб‑сайт', description: 'Корпоративный веб‑сайт'},
+            {value: 'Лендинг', description: 'Одностраничный сайт'},
+            {value: 'Сайт услуг', description: 'Для компаний и специалистов'},
+            {value: 'Корпоративный сайт', description: 'Многостраничный сайт компании'},
             {value: 'Не уверен', description: ''}
           ]
         },
@@ -246,9 +246,9 @@ const publicKey = import.meta.env.EMAILJS_PUBLIC_KEY;
           subTitle: 'Можно выбрать несколько вариантов',
           multiple: true,
           options: [
-            {value: 'SEO', description: 'Техническая подготовка к продвижению'},
+            {value: 'SEO', description: 'Техническая подготовка сайта к продвижению'},
             {value: 'Аналитика', description: 'Google Analytics и Яндекс.Метрика'},
-            {value: 'CMS', description: 'Самостоятельное редактирование веб‑сайта'},
+            {value: 'CMS', description: 'Редактирование сайта без разработчика'},
             {value: 'Пока не решил', description: ''}
           ]
         }
@@ -329,8 +329,8 @@ const publicKey = import.meta.env.EMAILJS_PUBLIC_KEY;
         card.innerHTML = `
           <div class="configurator__card-content">
             ${getProgressBarHtml('finish')}
-            <h3 class="configurator__card-title" tabindex="-1">Проверьте ваш проект</h3>
-            <p class="configurator__helper">Проверьте параметры перед отправкой заявки.</p>
+            <h3 class="configurator__card-title" tabindex="-1">Проверьте информацию о проекте</h3>
+            <p class="configurator__helper">Проверьте выбранные параметры и отправьте заявку. Мы свяжемся с вами для обсуждения проекта.</p>
             <div class="configurator__summary-list">
               <div class="configurator__summary-item">
                 <span class="configurator__summary-name">Тип веб‑сайта</span>
@@ -454,10 +454,10 @@ const publicKey = import.meta.env.EMAILJS_PUBLIC_KEY;
         card.innerHTML = `
           <div class="configurator__card-content">
             ${getProgressBarHtml('finish')}
-            <h3 class="configurator__card-title" tabindex="-1">Заявка отправлена</h3>
-            <p class="configurator__helper">Мы получили информацию о вашем проекте и свяжемся с вами в ближайшее время.</p>
+            <h3 class="configurator__card-title" tabindex="-1">Спасибо! Заявка отправлена.</h3>
+            <p class="configurator__helper">Мы получили вашу заявку и информацию о проекте. В ближайшее время свяжемся с вами, чтобы обсудить детали.</p>
             <div class="configurator__actions">
-              <button type="button" class="configurator__next" data-reset>Создать ещё одну заявку</button>
+              <button type="button" class="configurator__next" data-reset>Рассчитать другой проект</button>
             </div>
           </div>
         `;

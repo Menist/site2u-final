@@ -1,0 +1,160 @@
+---
+
+const approachItems = [
+  { approach: 'Полностью ваш веб-сайт', benefit: 'Не зависит от конструкторов, подписок и сторонних платформ' },
+  { approach: 'Базовая SEO-подготовка', benefit: 'Веб-сайт готов к индексации поисковыми системами' },
+  { approach: 'Постоплата', benefit: 'Оплата за выполненный результат' },
+  { approach: 'Компания с офисом в Минске', benefit: 'Работаете с реальной компанией, а не с анонимным исполнителем' },
+  { approach: 'Только необходимые функции', benefit: 'Без переплаты за ненужный функционал' },
+  { approach: 'Продуманная структура веб-сайта', benefit: 'Проще сопровождать и развивать' },
+];
+---
+<section class:list={['our-approach', 'section--padded']}>
+  <div class="container">
+    <h2 class="section-heading">Наш подход к разработке сайтов</h2>
+    <p class="section-heading__subtitle">
+      Мы придерживаемся единых принципов в каждом проекте. Они помогают создавать веб-сайты, которые проще поддерживать, развивать и использовать в работе.
+    </p>
+
+    <div class="approach-table-wrap">
+      <table class="approach-table">
+        <thead>
+        <tr>
+          <th scope="col">Наш подход</th>
+          <th scope="col">Что получает заказчик</th>
+        </tr>
+        </thead>
+        <tbody>
+        {approachItems.map((item) => (
+            <tr>
+              <td>{item.approach}</td>
+              <td>{item.benefit}</td>
+            </tr>
+        ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<style>
+  .our-approach--bg-primary {
+    background: var(--color-bg-primary);
+  }
+
+  .our-approach--bg-secondary {
+    background: var(--color-bg-secondary);
+  }
+
+  .approach-table-wrap {
+    max-width: var(--container-md);
+    margin: 0 auto;
+    overflow-x: auto;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.10);
+    background: var(--color-bg-primary);
+    /* На узких экранах даёт визуальную подсказку, что таблицу можно прокрутить */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .approach-table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+  }
+
+  .approach-table th,
+  .approach-table td {
+    text-align: left;
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  .approach-table thead th {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .approach-table tbody td {
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .approach-table tbody td:first-child {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .approach-table tbody td:last-child {
+    color: var(--color-text-secondary);
+  }
+
+  .approach-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* ==========================================================================
+     АДАПТИВНАЯ ВЕРСТКА: our-approach
+     ========================================================================== */
+
+  /* ===== Планшеты (до 992px) ===== */
+  @media (max-width: 992px) {
+    .approach-table th,
+    .approach-table td {
+      padding: var(--space-sm) var(--space-md);
+    }
+
+    .approach-table tbody td {
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  /* ===== Мобильные (до 768px) ===== */
+  @media (max-width: 768px) {
+    .approach-table-wrap {
+      margin: 0 calc(var(--space-sm) * -1);
+      width: calc(100% + var(--space-sm) * 2);
+      border-radius: 0;
+      box-shadow: none;
+      border-top: 1px solid var(--color-divider);
+      border-bottom: 1px solid var(--color-divider);
+    }
+
+    .approach-table {
+      min-width: 480px;
+    }
+
+    .approach-table th,
+    .approach-table td {
+      padding: var(--space-sm);
+    }
+
+    .approach-table thead th {
+      font-size: 11px;
+    }
+
+    .approach-table tbody td {
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  /* ===== Маленькие телефоны (до 480px) ===== */
+  @media (max-width: 480px) {
+    .approach-table {
+      min-width: 420px;
+    }
+
+    .approach-table th,
+    .approach-table td {
+      padding: var(--space-xs) var(--space-sm);
+    }
+
+    .approach-table tbody td {
+      font-size: var(--font-size-xs);
+    }
+  }
+</style>

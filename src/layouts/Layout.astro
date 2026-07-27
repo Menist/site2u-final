@@ -1,20 +1,19 @@
 ---
 import '@fontsource/open-sans/300.css';
-import '@fontsource/open-sans/400.css';
 import '@fontsource/open-sans/600.css';
 import '@fontsource/open-sans/700.css';
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import '../styles/global.css'
 import fontBoldUrl from "@fontsource/open-sans/files/open-sans-cyrillic-700-normal.woff2?url";
-import fontRegularUrl from "@fontsource/open-sans/files/open-sans-cyrillic-400-normal.woff2?url";
+import fontLightUrl from "@fontsource/open-sans/files/open-sans-cyrillic-300-normal.woff2?url";
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "site2u.by",
   "url": "https://site2u.by/",
   "logo": "https://site2u.by/android-chrome-512x512.png",
-  "telephone": "+375296195265",
+  "telephone": "+375293195265",
   "email": "imc@imc.by",
   "address": {
     "@type": "PostalAddress",
@@ -37,10 +36,11 @@ interface Props {
 
 const { title, description, serviceSchema, transparent = false, bodyClass = '' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImageURL = new URL('/og-image.jpg', Astro.site);
+const ogImageURL = new URL('/og-image.png', Astro.site);
+
+
 
 ---
-<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8"/>
@@ -50,32 +50,34 @@ const ogImageURL = new URL('/og-image.jpg', Astro.site);
   </script>
   <!-- 2. Viewport -->
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <link
-      rel="preload"
-      as="image"
-      href="/images/hero-bg-1280.webp"
-      imagesrcset="
+  {bodyClass === 'is-home' && (
+      <link
+          rel="preload"
+          as="image"
+          href="/images/hero-bg-1280.webp"
+          imagesrcset="
     /images/hero-bg-640.webp 640w,
     /images/hero-bg-960.webp 960w,
     /images/hero-bg-1280.webp 1280w,
     /images/hero-bg-1920.webp 1920w,
     /images/hero-bg-2560.webp 2560w
   "
-      imagesizes="100vw"
-      fetchpriority="high"
-  />
+          imagesizes="100vw"
+          fetchpriority="high"
+      />
+  )}
 
 
-  <link rel="preload" as="font" type="font/woff2" href={fontRegularUrl} crossorigin />
-
+  <link rel="preload" as="font" type="font/woff2" href={fontLightUrl} crossorigin />
   <link rel="preload" as="font" type="font/woff2" href={fontBoldUrl} crossorigin />
   <style is:global>
-
     .js-loading .services,
     .js-loading .about-teaser,
     .js-loading .advantages,
+    .js-loading .not-doing,
     .js-loading .process,
     .js-loading .configurator,
+    .js-loading .our-approach,
     .js-loading .cta {
       opacity: 0 !important;
       transform: translateY(35px) !important;

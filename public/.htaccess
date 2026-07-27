@@ -46,7 +46,8 @@ AddDefaultCharset UTF-8
             https://www.google.com; \
         frame-src 'self' \
             https://yandex.ru \
-            https://api-maps.yandex.ru; \
+            https://api-maps.yandex.ru \
+            https://mc.yandex.md; \
         worker-src 'self' blob:; \
         object-src 'none'; \
         base-uri 'self'; \

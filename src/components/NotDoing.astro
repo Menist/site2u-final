@@ -1,0 +1,194 @@
+---
+const notDoingItems = [
+  {
+    title: 'Интернет-магазины',
+    description: 'Проекты с каталогами товаров, корзиной, онлайн-оплатой, интеграцией со службами доставки и учётными системами требуют другой архитектуры и специализированных решений. Такие проекты мы не разрабатываем.'
+  },
+  {
+    title: 'CRM',
+    description: 'Не занимаемся разработкой корпоративных систем для управления клиентами, продажами, складом, производством и другими внутренними бизнес-процессами.'
+  },
+  {
+    title: 'Сервисы с личными кабинетами',
+    description: 'Не разрабатываем сложные веб-приложения с регистрацией пользователей, личными кабинетами, ролями доступа и нестандартной бизнес-логикой. Мы специализируемся на сайтах услуг, сайтах-визитках, лендингах и промо-страницах.'
+  },
+  {
+    title: 'Интеграции с внутренними базами данных',
+    description: 'Не выполняем сложные интеграции сайта с внутренними корпоративными системами, такими как 1С, ERP, CRM, складские базы данных и внутренние API.'
+  }
+];
+---
+<section class="not-doing section--padded">
+  <div class="container">
+    <h2 class="section-heading">Проекты, которые не входят в нашу специализацию</h2>
+    <p class="section-heading__subtitle">
+      Мы разрабатываем сайты и лендинги для бизнеса и сознательно работаем именно в этом направлении. Такой подход помогает избежать лишних затрат времени и сразу определить наиболее подходящий путь реализации проекта.
+    </p>
+
+    <ul class="not-doing__grid">
+      {notDoingItems.map((item) => (
+          <li class="not-doing__card card card--subtle">
+            <span class="not-doing__icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <h3 class="not-doing__title">{item.title}</h3>
+            <p class="not-doing__description">{item.description}</p>
+          </li>
+      ))}
+    </ul>
+<h3>Если задача выходит за рамки нашей специализации</h3>
+    <p class="not-doing__note block--accent-border">
+      Если проект требует разработки, которой мы не занимаемся, мы честно сообщим об этом ещё до начала работ. Это позволит избежать лишних затрат времени.
+    </p>
+  </div>
+</section>
+
+<style>
+  .not-doing {
+    background: var(--color-bg-primary);
+  }
+
+  .not-doing__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: var(--space-lg);
+  }
+
+  .not-doing__card {
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .not-doing__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-circle);
+    background: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    flex-shrink: 0;
+  }
+
+  .not-doing__title {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .not-doing__description {
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .not-doing__note {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    max-width: var(--container-sm);
+    margin: var(--space-lg) 0;
+    padding-left: var(--space-sm);
+  }
+
+  /* ==========================================================================
+     АДАПТИВНАЯ ВЕРСТКА: not-doing
+     ========================================================================== */
+
+  /* ===== Планшеты (до 992px) ===== */
+  @media (max-width: 992px) {
+    .not-doing__grid {
+      gap: var(--space-sm);
+      margin-bottom: var(--space-md);
+    }
+
+    .not-doing__card {
+      padding: var(--space-md);
+      gap: var(--space-xs);
+    }
+
+    .not-doing__title {
+      font-size: var(--font-size-base);
+    }
+
+    .not-doing__description {
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  /* ===== Мобильные (до 768px) ===== */
+  @media (max-width: 768px) {
+    .not-doing__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+    }
+
+    .not-doing__card {
+      padding: var(--space-md);
+      border-radius: var(--radius-sm);
+    }
+
+    .not-doing__card:hover {
+      transform: none;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    }
+
+    .not-doing__icon {
+      width: 36px;
+      height: 36px;
+    }
+
+    .not-doing__icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .not-doing__title {
+      font-size: var(--font-size-base);
+    }
+
+    .not-doing__description {
+      font-size: var(--font-size-sm);
+    }
+
+    .not-doing__note {
+      font-size: var(--font-size-sm);
+      padding-left: var(--space-md);
+    }
+  }
+
+  /* ===== Маленькие телефоны (до 480px) ===== */
+  @media (max-width: 480px) {
+    .not-doing__card {
+      padding: var(--space-sm);
+      gap: 4px;
+    }
+
+    .not-doing__title {
+      font-size: var(--font-size-sm);
+    }
+
+    .not-doing__description {
+      font-size: var(--font-size-xs);
+    }
+
+    .not-doing__note {
+      font-size: var(--font-size-xs);
+      padding-left: var(--space-sm);
+    }
+  }
+
+  /* ===== Отключение hover на touch-устройствах ===== */
+  @media (hover: none) {
+    .not-doing__card:hover {
+      transform: none !important;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07) !important;
+    }
+  }
+</style>
